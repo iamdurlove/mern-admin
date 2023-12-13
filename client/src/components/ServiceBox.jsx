@@ -1,16 +1,16 @@
-const ServiceBox = () =>
+const ServiceBox = ( props ) =>
 {
     return (
         <div className="servicebox-container">
             <div className="service-image">
-                <img src="" alt="service-image" />
+                <img src="/public/vite.svg" alt="service-image" />
             </div>
             <div className="service-info">
-                <h2>Web Development</h2>
-                <p>Custom website development using modern technologies.</p>
+                <h2>{ props.service }</h2>
+                <p>{ props.description }</p>
             </div>
             <div className="service-price">
-                <h2>$1000</h2>
+                <h3>Starting from { props.price }</h3>
             </div>
         </div>
     )

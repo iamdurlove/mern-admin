@@ -1,54 +1,61 @@
 import { useAuth } from "../store/auth"
 import { useState } from "react";
 
-const Contact = () => {
-  const [contact, setContact] = useState({});
-  const [userData, setUserData] = useState(true);
+const Contact = () =>
+{
+  const [ contact, setContact ] = useState( {} );
+  const [ userData, setUserData ] = useState( true );
   const { user } = useAuth();
 
   // console.log(user);
 
-  if (userData && user) {
-    setContact({
+  if ( userData && user )
+  {
+    setContact( {
       name: user.username,
       email: user.email,
-    });
-    setUserData(false);
+    } );
+    setUserData( false );
   }
 
-  const handleInput = (e) => {
+  const handleInput = ( e ) =>
+  {
     let name = e.target.name;
     let value = e.target.value;
-    setContact({ ...contact, [name]: value });
+    setContact( { ...contact, [ name ]: value } );
 
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async ( e ) =>
+  {
     e.preventDefault();
     const URL = "http://127.0.0.1:5000/api/form/contact";
 
-    try {
-      const response = await fetch(URL, {
+    try
+    {
+      const response = await fetch( URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(contact),
-      });
-      console.log("contact data: ", contact)
+        body: JSON.stringify( contact ),
+      } );
+      console.log( "contact data: ", contact )
 
 
-      if (response.ok) {
+      if ( response.ok )
+      {
         const res_data = await response.json();
-        console.log('res from server', res_data);
-        setContact({
+        console.log( 'res from server', res_data );
+        setContact( {
           message: ""
-        })
-        alert("Message sent successfully");
+        } )
+        alert( "Message sent successfully" );
       }
 
-      console.log(response);
-    } catch (error) {
-      console.log("contact form error: ", error);
+      console.log( response );
+    } catch ( error )
+    {
+      console.log( "contact form error: ", error );
     }
 
   };
@@ -58,7 +65,7 @@ const Contact = () => {
   return (
     <div className="contact-form">
       <h1 className="main-heading mb-3">Contact Form</h1> <br />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={ handleSubmit }>
         <div className="form-inputs">
           <label htmlFor="username">username</label>
           <input
@@ -68,8 +75,8 @@ const Contact = () => {
             id="username"
             required
             autoComplete="off"
-            value={contact.name}
-            onChange={handleInput}
+            value={ contact.name }
+            onChange={ handleInput }
           />
         </div>
         <div className="form-inputs">
@@ -81,8 +88,8 @@ const Contact = () => {
             id="email"
             required
             autoComplete="off"
-            value={contact.email}
-            onChange={handleInput}
+            value={ contact.email }
+            onChange={ handleInput }
           />
         </div>
         <div className="form-inputs">
@@ -94,13 +101,13 @@ const Contact = () => {
             id="message"
             required
             autoComplete="off"
-            value={contact.message}
-            onChange={handleInput}
+            value={ contact.message }
+            onChange={ handleInput }
           />
         </div>
         <br />
         <button type="submit" className="btn btn-submit">
-          Register Now
+          Send Message
         </button>
       </form>
     </div>
