@@ -1,0 +1,30 @@
+.container{
+    max-width: 108rem;
+    padding: 2.2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container .logo-brand a{
+    text-decoration: none;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+ul{
+    display: flex;
+    gap: 3rem;
+}
+
+ul li{
+    list-style: none;
+}
+
+ul li a{
+    text-decoration: none;
+    color: rgb(107, 65, 222);
+    font-family: 'Courier New', Courier, monospace;
+
+}
