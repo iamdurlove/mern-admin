@@ -10,7 +10,7 @@ const signUpSchema = z.object({
 	email: z
 		.string({ required_error_: "email is required" })
 		.trim()
-		.min(3, { message: "email must be least 3 characters" })
+		.min(8, { message: "email must be least 8 characters" })
 		.max(255, { message: "email must be max 256 characters" }),
 
 	phone: z
@@ -30,7 +30,7 @@ const loginSchema = z.object({
 	email: z
 		.string({ required_error_: "email is required" })
 		.trim()
-		.min(3, { message: "email must be least 3 characters" })
+		.min(8, { message: "email must be least 8 characters" })
 		.max(255, { message: "email must be max 256 characters" }),
 
 	password: z
