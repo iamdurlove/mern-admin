@@ -1,5 +1,7 @@
 import { useAuth } from "../store/auth"
 import { useState } from "react";
+import { toast } from 'react-toastify';
+
 
 const Contact = () =>
 {
@@ -49,7 +51,7 @@ const Contact = () =>
         setContact( {
           message: ""
         } )
-        alert( "Message sent successfully" );
+        toast.success( "Message sent successfully" );
       }
 
       console.log( response );
