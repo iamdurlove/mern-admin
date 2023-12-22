@@ -5,7 +5,7 @@ import { useAuth } from '../store/auth';
 
 const Navbar = () =>
 {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, user } = useAuth();
     return (
         <>
             <header>
@@ -28,10 +28,16 @@ const Navbar = () =>
                                 <NavLink to="/contact">Contact</NavLink>
                             </li>
 
+                            { ( isLoggedIn || user.isAdmin ) ?
+                                <li>
+                                    <NavLink to="/admin">Dashboard</NavLink>
+                                </li> : null }
+
                             { ( isLoggedIn ) ?
                                 <li >
                                     <NavLink to="/logout">Logout</NavLink>
-                                </li> :
+                                </li>
+                                :
                                 <>
                                     <li>
                                         <NavLink to="/login">Login</NavLink>
@@ -41,6 +47,9 @@ const Navbar = () =>
                                     </li>
                                 </>
                             }
+
+
+
                         </ul>
                     </nav>
                 </div>

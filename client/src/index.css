@@ -32,6 +32,24 @@ body{
     }
 }
 
+.admin-container{
+    display: flex;
+    gap: 5%;
+    & .menu-container{
+        border: solid 1px white !important;
+        padding: 5%;
+        & ul{
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    & .content-div{
+        border: solid 1px white !important;
+        padding: 5%;
+        width: 100%;
+    }
+}
+
 .toastBody{
     font-family: "Atlas Grotesk Web", Arial, Helvetica, sans-serif;
     /* color: #10171D; */
