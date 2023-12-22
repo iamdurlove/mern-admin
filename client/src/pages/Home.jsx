@@ -5,7 +5,7 @@ const Home = () =>
   const { user } = useAuth();
 
   return (
-    <>      <h2>Welcome, { user ? user.username : "Guest" }</h2>
+    <>      <h2>Welcome, { user.username || "Guest" }</h2>
 
     </>
   )

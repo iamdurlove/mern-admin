@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Error from "./pages/Error";
+import AdminHome from "./pages/admin/AdminHome";
 import Navbar from "./components/Navbar";
 
 const App = () =>
@@ -22,6 +23,7 @@ const App = () =>
         <Route path="/register" element={ <Register /> } />
         <Route path="/login" element={ <Login /> } />
         <Route path="/logout" element={ <Logout /> } />
+        <Route path="/admin" element={ <AdminHome /> } />
         <Route path="*" element={ <Error /> } />
       </Routes>
     </BrowserRouter>
