@@ -80,26 +80,26 @@ const Register = () =>
 	return (
 		<>
 			<section>
-				<main>
+				<main className="main">
 					<div className="section-registration">
 						<div className="container grid grid-two-cols">
 							<div className="registration-image">
 								<img
-									src="/images/register.png"
+									src="/images/login.png"
 									alt="register image"
 									width={ "400" }
 									height={ "400" }
 								/>
 							</div>
 							<div className="registration-form">
-								<h1 className="main-heading mb-3">Registration Form</h1> <br />
+								<h1 className="main-heading mb-3">Registration Form</h1>
 								<form onSubmit={ handleSubmit }>
 									<div className="form-inputs">
-										<label htmlFor="username">username</label>
+										<label htmlFor="username">Username</label>
 										<input
 											type="text"
 											name="username"
-											placeholder="username"
+											placeholder="Enter Your Username"
 											id="username"
 											required
 											autoComplete="off"
@@ -108,11 +108,11 @@ const Register = () =>
 										/>
 									</div>
 									<div className="form-inputs">
-										<label htmlFor="email">email</label>
+										<label htmlFor="email">Email</label>
 										<input
 											type="email"
 											name="email"
-											placeholder="email"
+											placeholder="Enter Your Email"
 											id="email"
 											required
 											autoComplete="off"
@@ -121,11 +121,11 @@ const Register = () =>
 										/>
 									</div>
 									<div className="form-inputs">
-										<label htmlFor="phone">phone</label>
+										<label htmlFor="phone">Phone</label>
 										<input
 											type="number"
 											name="phone"
-											placeholder="phone"
+											placeholder="Enter Your Phone"
 											id="phone"
 											required
 											autoComplete="off"
@@ -134,11 +134,11 @@ const Register = () =>
 										/>
 									</div>
 									<div className="form-inputs">
-										<label htmlFor="password">password</label>
+										<label htmlFor="password">Password</label>
 										<input
 											type="password"
 											name="password"
-											placeholder="password"
+											placeholder="Enter Your Password"
 											id="password"
 											required
 											autoComplete="off"
@@ -147,7 +147,10 @@ const Register = () =>
 										/>
 									</div>
 									<br />
-									<button type="submit" className="btn btn-submit">
+									<button
+										type="submit"
+										className="btn btn-submit btn-outline-primary"
+									>
 										Register Now
 									</button>
 								</form>

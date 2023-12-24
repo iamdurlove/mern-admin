@@ -88,11 +88,11 @@ const Login = () =>
 								<h1 className="main-heading mb-3">Login Here</h1> <br />
 								<form onSubmit={ handleSubmit }>
 									<div className="form-inputs">
-										<label htmlFor="email">email</label>
+										<label htmlFor="email">Email</label>
 										<input
 											type="email"
 											name="email"
-											placeholder="email"
+											placeholder="enter your email address"
 											id="email"
 											required
 											autoComplete="off"
@@ -102,11 +102,11 @@ const Login = () =>
 									</div>
 
 									<div className="form-inputs">
-										<label htmlFor="password">password</label>
+										<label htmlFor="password">Password</label>
 										<input
 											type="password"
 											name="password"
-											placeholder="password"
+											placeholder="enter your password"
 											id="password"
 											required
 											autoComplete="off"
@@ -115,7 +115,7 @@ const Login = () =>
 										/>
 									</div>
 									<br />
-									<button type="submit" className="btn btn-submit">
+									<button type="submit" className="btn btn-submit btn-primary">
 										Login
 									</button>
 								</form>

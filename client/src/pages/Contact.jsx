@@ -69,11 +69,11 @@ const Contact = () =>
       <h1 className="main-heading mb-3">Contact Form</h1> <br />
       <form onSubmit={ handleSubmit }>
         <div className="form-inputs">
-          <label htmlFor="username">username</label>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
             name="name"
-            placeholder="username"
+            placeholder="enter your username"
             id="username"
             required
             autoComplete="off"
@@ -82,11 +82,11 @@ const Contact = () =>
           />
         </div>
         <div className="form-inputs">
-          <label htmlFor="email">email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             name="email"
-            placeholder="email"
+            placeholder="enter your email address"
             id="email"
             required
             autoComplete="off"
@@ -95,11 +95,11 @@ const Contact = () =>
           />
         </div>
         <div className="form-inputs">
-          <label htmlFor="message">message</label>
+          <label htmlFor="message">Message</label>
           <textarea
             type="text"
             name="message"
-            placeholder="message"
+            placeholder="enter your message"
             id="message"
             required
             autoComplete="off"
@@ -108,7 +108,7 @@ const Contact = () =>
           />
         </div>
         <br />
-        <button type="submit" className="btn btn-submit">
+        <button type="submit" className="btn btn-submit btn-success">
           Send Message
         </button>
       </form>

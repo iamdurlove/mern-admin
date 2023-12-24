@@ -8,7 +8,7 @@
 .container .logo-brand a{
     text-decoration: none;
     color: white;
-    font-family: 'Courier New', Courier, monospace;
+    /* font-family: 'Courier New', Courier, monospace; */
     font-weight: bolder;
     font-size: 25px;
 }
@@ -24,7 +24,7 @@ ul li{
 
 ul li a{
     text-decoration: none;
-    color: rgb(107, 65, 222);
+    color: rgb(0, 255, 110);
     font-family: 'Courier New', Courier, monospace;
 
 }

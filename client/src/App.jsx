@@ -12,6 +12,7 @@ import AdminHome from "./pages/admin/AdminHome";
 // import AdminUsers from "./pages/admin/AdminUsers";
 // import AdminContacts from "./pages/admin/AdminContacts";
 import Navbar from "./components/Navbar";
+import 'bootstrap/dist/css/bootstrap.css';
 
 const App = () =>
 {

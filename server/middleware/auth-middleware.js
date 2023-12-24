@@ -4,7 +4,9 @@ const jwt = require("jsonwebtoken");
 const authMiddleware = async (req, res, next) => {
 	const token = req.header("Authorization");
 	if (!token) {
-		return res.status(401).json({ msg: "No token provided" });
+		return res
+			.status(401)
+			.json({ message: "Unauthorized aceess. No token provided" });
 	}
 	const jwtToken = token.replace("Bearer", "").trim();
 	//   console.log(jwtToken);
