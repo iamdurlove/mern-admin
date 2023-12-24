@@ -26,11 +26,12 @@ app.use("/api/data", serviceRoute);
 app.use("/api/admin", adminRoute);
 app.get("/", (req, res) => {
 	res.json({
-		message: "Connection established",
+		message: "Server online",
 		developer: "Durlav Parajuli",
 		device: hostaddress,
 		network: req.connection.remoteAddress,
 		osVersion: os.release(),
+		osPlatform: os.platform(),
 		uptime: parseInt(os.uptime()) + " seconds",
 		user: os.userInfo(),
 	});
