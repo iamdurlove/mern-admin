@@ -1,5 +1,5 @@
 // UserForm.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 const UserForm = ( { show, handleClose, userData, handleUpdate } ) =>
@@ -13,7 +13,7 @@ const UserForm = ( { show, handleClose, userData, handleUpdate } ) =>
 
     const handleSave = () =>
     {
-        handleUpdate( updatedData );
+        handleUpdate( updatedData, data );
         handleClose();
     };
 
@@ -29,9 +29,10 @@ const UserForm = ( { show, handleClose, userData, handleUpdate } ) =>
                         <Form.Control
                             type="text"
                             name="username"
-                            value={ updatedData.username }
+                            value={ updatedData.username || '' }
                             onChange={ handleChange }
                             className="bg-dark text-light"
+
                         />
                     </Form.Group>
                     <Form.Group controlId="formEmail">

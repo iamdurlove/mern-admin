@@ -15,6 +15,9 @@ const corsOptions = {
 	credientials: true,
 };
 
+var os = require("os");
+var hostaddress = os.hostname();
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api/auth", authRoute);
@@ -22,7 +25,15 @@ app.use("/api/form", contactRoute);
 app.use("/api/data", serviceRoute);
 app.use("/api/admin", adminRoute);
 app.get("/", (req, res) => {
-	res.json({ msg: "connection established" });
+	res.json({
+		message: "Connection established",
+		developer: "Durlav Parajuli",
+		device: hostaddress,
+		network: req.connection.remoteAddress,
+		osVersion: os.release(),
+		uptime: parseInt(os.uptime()) + " seconds",
+		user: os.userInfo(),
+	});
 });
 
 app.use(errorMiddleware);
