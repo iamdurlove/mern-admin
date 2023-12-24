@@ -18,11 +18,11 @@ const UserForm = ( { show, handleClose, userData, handleUpdate } ) =>
     };
 
     return (
-        <Modal show={ show } onHide={ handleClose }>
-            <Modal.Header closeButton>
+        <Modal show={ show } onHide={ handleClose } dialogClassName="dark-modal">
+            <Modal.Header closeButton className="bg-dark text-light">
                 <Modal.Title>Edit User</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="bg-dark text-light">
                 <Form>
                     <Form.Group controlId="formUsername">
                         <Form.Label>Username</Form.Label>
@@ -31,6 +31,7 @@ const UserForm = ( { show, handleClose, userData, handleUpdate } ) =>
                             name="username"
                             value={ updatedData.username }
                             onChange={ handleChange }
+                            className="bg-dark text-light"
                         />
                     </Form.Group>
                     <Form.Group controlId="formEmail">
@@ -40,6 +41,7 @@ const UserForm = ( { show, handleClose, userData, handleUpdate } ) =>
                             name="email"
                             value={ updatedData.email }
                             onChange={ handleChange }
+                            className="bg-dark text-light"
                         />
                     </Form.Group>
                     <Form.Group controlId="formPhone">
@@ -49,11 +51,12 @@ const UserForm = ( { show, handleClose, userData, handleUpdate } ) =>
                             name="phone"
                             value={ updatedData.phone }
                             onChange={ handleChange }
+                            className="bg-dark text-light"
                         />
                     </Form.Group>
                 </Form>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer className="bg-dark">
                 <Button variant="secondary" onClick={ handleClose }>
                     Close
                 </Button>

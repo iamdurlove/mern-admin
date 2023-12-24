@@ -34,6 +34,9 @@ const AdminHome = () =>
                     </ul>
                 </div>
                 <div className="content-div">
+                    <div className="action-container">
+                        { }
+                    </div>
                     <Routes>
                         <Route path="/users" element={ <AdminUsers /> } />
                         <Route path="/contacts" element={ <AdminContacts /> } />

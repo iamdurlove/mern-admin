@@ -34,6 +34,38 @@ const AdminServices = () =>
 
         fetchUsers();
     }, [] )
+
+    const handleDelete = async ( userId, serviceName ) =>
+    {
+        const confirmDelete = window.confirm( `Delete the service for ${ serviceName }` );
+        if ( confirmDelete )
+        {
+            try
+            {
+                const response = await fetch( `${ URL }/${ userId }`, {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: `Bearer ${ token }`,
+                    },
+                } );
+                if ( response.ok )
+                {
+                    // Remove the deleted user from the state
+                    setData( prevData => prevData.filter( user => user._id !== userId ) );
+                    toast.success( "Service Deleted Successfully" );
+                } else
+                {
+                    toast.error( "Error Deleting Service" );
+                }
+            } catch ( error )
+            {
+                toast.error( "Error deleting service" );
+                console.log( error );
+            }
+        }
+
+    }
+
     return (
         <div className="user-container">
             <Table striped bordered hover>
@@ -54,7 +86,7 @@ const AdminServices = () =>
                             <td>{ data[ i ].provider }</td>
                             <td>{ data[ i ].price }</td>
                             <td>
-                                <Button variant="danger" onClick={ () => handleDelete( data[ i ]._id ) }>Delete</Button>
+                                <Button variant="danger" onClick={ () => handleDelete( data[ i ]._id, data[ i ].service ) }>Delete</Button>
                             </td>
                         </tr>
                     ) ) }

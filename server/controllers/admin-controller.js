@@ -5,7 +5,7 @@ const Service = require("../models/service-model");
 const getAllUsers = async (req, res) => {
 	try {
 		const { isAdmin, email } = req.user;
-		console.log(isAdmin);
+		// console.log(isAdmin);
 		if (!isAdmin)
 			return res.status(404).json({ message: "Unauthorized access" });
 		const users = await User.find({ email: { $ne: email } }, { password: 0 });
@@ -61,6 +61,18 @@ const deleteContact = async (req, res) => {
 	}
 };
 
+const deleteService = async (req, res) => {
+	try {
+		const id = req.body.id;
+		const deleteService = await Service.deleteOne({ id });
+		if (deleteService.deletedCount === 1)
+			return res.status(200).json({ message: "Service deleted successfully" });
+		else return res.status(404).json({ error: "Service not found" });
+	} catch (error) {
+		console.error(error);
+	}
+};
+
 const editUser = async (req, res) => {
 	try {
 		const userId = req.params.id;
@@ -100,5 +112,6 @@ module.exports = {
 	getAllServices,
 	deleteUser,
 	deleteContact,
+	deleteService,
 	editUser,
 };

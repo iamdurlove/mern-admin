@@ -12,9 +12,9 @@ const register = async (req, res) => {
 	try {
 		const { username, email, phone, password } = req.body;
 		const emailExist = await User.findOne({ email });
-		const userExist = await User.findOne({ username });
+		// const userExist = await User.findOne({ username });
 
-		if (userExist || emailExist)
+		if (emailExist)
 			return res.status(400).json({ message: "User already exists" });
 
 		const userCreated = await User.create({ email, username, phone, password });

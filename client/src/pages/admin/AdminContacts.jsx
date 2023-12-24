@@ -57,11 +57,11 @@ const AdminContacts = () =>
                     toast.success( "User Deleted Successfully" );
                 } else
                 {
-                    toast.error( "Error Deleting User" );
+                    toast.error( "Error Deleting Contact" );
                 }
             } catch ( error )
             {
-                toast.error( "Error deleting user" );
+                toast.error( "Error deleting contact" );
                 console.log( error );
             }
         }

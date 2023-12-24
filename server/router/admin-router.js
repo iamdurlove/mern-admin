@@ -15,6 +15,9 @@ router.route("/users/:id").delete(authMiddleware, adminController.deleteUser);
 router
 	.route("/contacts/:id")
 	.delete(authMiddleware, adminController.deleteContact);
+router
+	.route("/services/:id")
+	.delete(authMiddleware, adminController.deleteService);
 
 //edit
 router
