@@ -8,11 +8,9 @@ import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Error from "./pages/Error";
 import AdminHome from "./pages/admin/AdminHome";
-// import AdminServices from "./pages/admin/AdminServices";
-// import AdminUsers from "./pages/admin/AdminUsers";
-// import AdminContacts from "./pages/admin/AdminContacts";
 import Navbar from "./components/Navbar";
 import 'bootstrap/dist/css/bootstrap.css';
+import Profile from "./pages/profile/Profile";
 
 const App = () =>
 {
@@ -27,10 +25,8 @@ const App = () =>
         <Route path="/register" element={ <Register /> } />
         <Route path="/login" element={ <Login /> } />
         <Route path="/logout" element={ <Logout /> } />
+        <Route path="/profile/*" element={ <Profile /> } />
         <Route path="/admin/*" element={ <AdminHome /> } />
-        {/* <Route path="/admin/users" element={ <AdminUsers /> } />
-        <Route path="/admin/contacts" element={ <AdminContacts /> } />
-        <Route path="/admin/services" element={ <AdminServices /> } /> */}
         <Route path="*" element={ <Error /> } />
       </Routes>
     </BrowserRouter>

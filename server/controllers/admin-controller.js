@@ -7,7 +7,7 @@ const getAllUsers = async (req, res) => {
 		// to get the email of loggedIn User
 		const id = req.user.id;
 
-		const users = await User.find({ password: 0 });
+		const users = await User.find().select("-password");
 		if (!users || users.length === 0)
 			return res.status(404).json({ message: "No users found" });
 		res.status(200).json(users);

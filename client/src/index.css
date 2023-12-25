@@ -1,27 +1,27 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html{
+html {
     width: 80%;
     margin: auto;
 }
 
-body{
+body {
     background-color: black;
     color: white;
 }
 
-.service-container{
+.service-container {
     text-align: center;
 
-    & h1{
+    & h1 {
         margin-bottom: 1%;
     }
 
-    & .service-areas{
+    & .service-areas {
         display: inline-grid;
         grid-template-columns: auto auto auto;
         column-gap: 8%;
@@ -30,27 +30,44 @@ body{
     }
 }
 
-.admin-container{
+.admin-container {
     display: flex;
     gap: 5%;
-    & .menu-container{
+
+    & .menu-container {
         border: solid 1px white !important;
-        padding: 5%;
-        & ul{
+        padding: 4% 0;
+        text-align: center;
+        width: 15vw;
+        ;
+
+        & ul {
+            margin: auto;
             display: flex;
             flex-direction: column;
+            padding-left: 0!important;
+
+            & li {
+                text-align: center;
+                margin: auto;
+
+                & a {
+                    text-align: center;
+
+                }
+            }
+        }
+
+        & .content-div {
+            border: solid 1px white !important;
+            padding: 5%;
+            width: 100%;
         }
     }
-    & .content-div{
-        border: solid 1px white !important;
-        padding: 5%;
-        width: 100%;
+}
+    .toastBody {
+        font-family: "Atlas Grotesk Web", Arial, Helvetica, sans-serif;
+        /* color: #10171D; */
+        font-size: 0.875rem !important;
+        text-transform: capitalize;
     }
-}
-
-.toastBody{
-    font-family: "Atlas Grotesk Web", Arial, Helvetica, sans-serif;
-    /* color: #10171D; */
-    font-size: 0.875rem !important;
-    text-transform: capitalize;
-}

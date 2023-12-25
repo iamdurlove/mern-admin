@@ -61,4 +61,27 @@ const user = async (req, res) => {
 	} catch (error) {}
 };
 
-module.exports = { home, register, login, user };
+const changePassword = async (req, res) => {
+	const newPassword = req.body.newPassword;
+	const data = req.user;
+	const id = data.id;
+
+	// console.log("from frontend", newPassword);
+
+	const user = await User.findById(id).select("-password");
+
+	user.password = newPassword;
+
+	const result = await user.save();
+
+	console.log(result);
+
+	if (!result)
+		res
+			.status(404)
+			.json({ message: "Internal Server Error, please try again" });
+
+	res.status(200).json({ message: "Password changed successfully", data });
+};
+
+module.exports = { home, register, login, user, changePassword };
