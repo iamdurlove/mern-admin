@@ -1,3 +1,7 @@
+import React from 'react';
+import '../components/css/ServiceBox.css'; // 
+
+
 const ServiceBox = ( props ) =>
 {
     return (
@@ -9,8 +13,9 @@ const ServiceBox = ( props ) =>
                 <h2>{ props.service }</h2>
                 <p>{ props.description }</p>
             </div>
-            <div className="service-price">
-                <h3>Starting from { props.price }</h3>
+            <div className="service-cost">
+                <div className='service-provider' >Provider: { props.provider }</div>
+                <div className='service-price' >Starting from { props.price }</div>
             </div>
         </div>
     )

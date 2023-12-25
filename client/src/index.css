@@ -18,17 +18,15 @@ body{
     text-align: center;
 
     & h1{
-        margin-bottom: 2%;
+        margin-bottom: 1%;
     }
 
     & .service-areas{
-        /* width: 100%; */
         display: inline-grid;
         grid-template-columns: auto auto auto;
-        column-gap: 5%;
-        row-gap: 5%;
+        column-gap: 8%;
+        row-gap: 2%;
         justify-content: space-evenly;
-        margin-bottom: 5%;
     }
 }
 

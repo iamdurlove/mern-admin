@@ -50,6 +50,7 @@ const Service = ( props ) =>
                             service={ data[ i ].service }
                             description={ data[ i ].description }
                             price={ data[ i ].price }
+                            provider={ data[ i ].provider }
                         />
                     ) )
                 }
