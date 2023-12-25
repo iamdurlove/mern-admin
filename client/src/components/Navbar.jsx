@@ -50,10 +50,12 @@ const Navbar = () =>
                             }
 
 
+                            <li>
+                                <NavLink to="/profile" > { isLoggedIn ? `Hi, ${ user.username }` : null }</NavLink>
+                            </li>
 
                         </ul>
                     </nav>
-                    { isLoggedIn ? `Hello, ${ user.username }` : null }
                 </div>
             </header >
         </>

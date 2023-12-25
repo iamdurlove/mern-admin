@@ -4,11 +4,10 @@ const Service = require("../models/service-model");
 
 const getAllUsers = async (req, res) => {
 	try {
-		const { isAdmin, email } = req.user;
-		// console.log(isAdmin);
-		if (!isAdmin)
-			return res.status(404).json({ message: "Unauthorized access" });
-		const users = await User.find({ email: { $ne: email } }, { password: 0 });
+		// to get the email of loggedIn User
+		const id = req.user.id;
+
+		const users = await User.find({ password: 0 });
 		if (!users || users.length === 0)
 			return res.status(404).json({ message: "No users found" });
 		res.status(200).json(users);
@@ -77,29 +76,47 @@ const editUser = async (req, res) => {
 	try {
 		const userId = req.params.id;
 		const updatedData = req.body;
-
 		const user = await User.findById(userId);
-
-		const emailExist = await User.findOne({ email: user.email });
-		const userExist = await User.findOne({ username: user.username });
-
-		if (userExist || emailExist)
-			return res.status(400).json({ message: "User already exists" });
 
 		if (!user) {
 			return res.status(404).json({ error: "User not found" });
 		}
 
+		// Check if any field is updated
+		const isUpdated = Object.keys(updatedData).some(
+			(key) => user[key] !== updatedData[key]
+		);
+
+		console.log(isUpdated);
+
+		if (!isUpdated) {
+			return res
+				.status(400)
+				.json({ message: "At least one field should be updated" });
+		}
+
 		// Update user data
-		user.username = updatedData.username;
-		user.email = updatedData.email;
-		user.phone = updatedData.phone;
+		user.username = updatedData.username || user.username;
+		user.email = updatedData.email || user.email;
+		user.phone = updatedData.phone || user.phone;
+		user.password = updatedData.password || user.password;
+		user.isAdmin =
+			updatedData.isAdmin !== undefined ? updatedData.isAdmin : user.isAdmin;
 
-		await user.save();
+		// checking if the updated email already exists
+		const email = user.email;
 
-		return res
-			.status(200)
-			.json({ message: "User updated successfully", data: user });
+		const emailExist = await User.findOne({
+			email,
+			_id: { $ne: userId },
+		});
+
+		if (emailExist)
+			return res.status(400).json({ message: "User already exists" });
+
+		const data = await user.save();
+
+		return res.status(200).json({ message: "User updated successfully", data });
 	} catch (error) {
 		console.error(error);
 		return res.status(500).json({ error: "Internal Server Error" });

@@ -4,24 +4,38 @@ const validate = require("../middleware/validate-middleware");
 const { userEditSchema } = require("../validators/auth-validator");
 const router = express.Router();
 const authMiddleware = require("../middleware/auth-middleware");
+const adminMiddleware = require("../middleware/admin-middleware");
 
 //view
-router.route("/users").get(authMiddleware, adminController.getAllUsers);
-router.route("/contacts").get(authMiddleware, adminController.getAllContacts);
-router.route("/services").get(authMiddleware, adminController.getAllServices);
+router
+	.route("/users")
+	.get(authMiddleware, adminMiddleware, adminController.getAllUsers);
+router
+	.route("/contacts")
+	.get(authMiddleware, adminMiddleware, adminController.getAllContacts);
+router
+	.route("/services")
+	.get(authMiddleware, adminMiddleware, adminController.getAllServices);
 
 //delete
-router.route("/users/:id").delete(authMiddleware, adminController.deleteUser);
+router
+	.route("/users/:id")
+	.delete(authMiddleware, adminMiddleware, adminController.deleteUser);
 router
 	.route("/contacts/:id")
-	.delete(authMiddleware, adminController.deleteContact);
+	.delete(authMiddleware, adminMiddleware, adminController.deleteContact);
 router
 	.route("/services/:id")
-	.delete(authMiddleware, adminController.deleteService);
+	.delete(authMiddleware, adminMiddleware, adminController.deleteService);
 
 //edit
 router
 	.route("/users/:id")
-	.put(validate(userEditSchema), authMiddleware, adminController.editUser);
+	.put(
+		validate(userEditSchema),
+		authMiddleware,
+		adminMiddleware,
+		adminController.editUser
+	);
 
 module.exports = router;
