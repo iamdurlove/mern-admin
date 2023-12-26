@@ -62,7 +62,7 @@ const user = async (req, res) => {
 };
 
 const changePassword = async (req, res) => {
-	const newPassword = req.body.newPassword;
+	const newPassword = req.body.password;
 	const data = req.user;
 	const id = data.id;
 
@@ -74,7 +74,7 @@ const changePassword = async (req, res) => {
 
 	const result = await user.save();
 
-	console.log(result);
+	// console.log(result);
 
 	if (!result)
 		res
@@ -84,4 +84,48 @@ const changePassword = async (req, res) => {
 	res.status(200).json({ message: "Password changed successfully", data });
 };
 
-module.exports = { home, register, login, user, changePassword };
+const editProfile = async (req, res) => {
+	try {
+		const userId = req.user.id;
+		const updatedData = req.body;
+		const user = await User.findById(userId);
+
+		// Check if any field is updated
+		const isUpdated = Object.keys(updatedData).some(
+			(key) => user[key] !== updatedData[key]
+		);
+
+		// console.log(isUpdated);
+
+		if (!isUpdated) {
+			return res
+				.status(400)
+				.json({ message: "At least one field should be updated" });
+		}
+
+		// Update user data
+		user.username = updatedData.username || user.username;
+		user.email = updatedData.email || user.email;
+		user.phone = updatedData.phone || user.phone;
+
+		// checking if the updated email already exists
+		const email = user.email;
+
+		const emailExist = await User.findOne({
+			email,
+			_id: { $ne: userId },
+		});
+
+		if (emailExist)
+			return res.status(400).json({ message: "User already exists" });
+
+		const data = await user.save();
+
+		return res.status(200).json({ message: "User updated successfully", data });
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ error: "Internal Server Error" });
+	}
+};
+
+module.exports = { home, register, login, user, changePassword, editProfile };

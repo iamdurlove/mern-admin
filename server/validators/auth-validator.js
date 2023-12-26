@@ -71,4 +71,40 @@ const loginSchema = z.object({
 		.max(1024, { message: "password must be max 1024 characters" }),
 });
 
-module.exports = { signUpSchema, loginSchema, userEditSchema };
+const passwordChangeSchema = z.object({
+	password: z
+		.string({ required_error: "password is required" })
+		.trim()
+		.min(6, { message: "password must be least 6 characters" })
+		.max(1024, { message: "password must be max 1024 characters" }),
+});
+
+const editProfileSchema = z.object({
+	username: z
+		.string({ required_error: "username is required" })
+		.trim()
+		.min(4, { message: "username must be least 4 characters" })
+		.max(255, { message: "username must be max 256 characters" })
+		.optional(),
+	email: z
+		.string({ required_error: "email is required" })
+		.trim()
+		.min(8, { message: "email must be least 8 characters" })
+		.max(255, { message: "email must be max 256 characters" })
+		.optional(),
+
+	phone: z
+		.string({ required_error: "phone no is required" })
+		.trim()
+		.min(8, { message: "phone no must be least 8 characters" })
+		.max(10, { message: "phone no must be max 10 characters" })
+		.optional(),
+});
+
+module.exports = {
+	signUpSchema,
+	loginSchema,
+	userEditSchema,
+	passwordChangeSchema,
+	editProfileSchema,
+};

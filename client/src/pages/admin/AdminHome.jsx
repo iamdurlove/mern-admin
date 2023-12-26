@@ -35,14 +35,15 @@ const AdminHome = () =>
                 </div>
                 <div className="content-div">
                     <div className="action-container">
-                        { }
+
+                        <Routes>
+                            <Route path="/users" element={ <AdminUsers /> } />
+                            <Route path="/contacts" element={ <AdminContacts /> } />
+                            <Route path="/services" element={ <AdminServices /> } />
+                        </Routes>
                     </div>
-                    <Routes>
-                        <Route path="/users" element={ <AdminUsers /> } />
-                        <Route path="/contacts" element={ <AdminContacts /> } />
-                        <Route path="/services" element={ <AdminServices /> } />
-                    </Routes>
                 </div>
+
             </div>
         </>
     )

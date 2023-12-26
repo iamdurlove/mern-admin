@@ -7,7 +7,7 @@ const ServiceBox = ( props ) =>
     return (
         <div className="servicebox-container">
             <div className="service-image">
-                <img src="/public/vite.svg" alt="service-image" />
+                <img src="/vite.svg" alt="service-image" />
             </div>
             <div className="service-info">
                 <h2>{ props.service }</h2>

@@ -114,34 +114,34 @@ const AdminUsers = () =>
 
 
     return (
-        <>
-            <div className="user-container">
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>isAdmin</th>
-                            <th>Actions</th>
+        <><div className="user-container ">
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>isAdmin</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { data.map( ( item, i ) => (
+                        <tr key={ i }>
+                            <td>{ data[ i ].username }</td>
+                            <td>{ data[ i ].email }</td>
+                            <td>{ data[ i ].phone }</td>
+                            <td>{ data[ i ].isAdmin ? "Yes" : "No" }</td>
+                            <td>
+                                <Button variant="primary btn-sm" onClick={ () => handleEdit( data[ i ]._id ) }>Edit</Button>
+                                <Button variant="danger btn-sm" onClick={ () => handleDelete( data[ i ]._id, data[ i ].username ) }>Delete</Button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        { data.map( ( item, i ) => (
-                            <tr key={ i }>
-                                <td>{ data[ i ].username }</td>
-                                <td>{ data[ i ].email }</td>
-                                <td>{ data[ i ].phone }</td>
-                                <td>{ data[ i ].isAdmin ? "Yes" : "No" }</td>
-                                <td>
-                                    <Button variant="primary" onClick={ () => handleEdit( data[ i ]._id ) }>Edit</Button>
-                                    <Button variant="danger" onClick={ () => handleDelete( data[ i ]._id, data[ i ].username ) }>Delete</Button>
-                                </td>
-                            </tr>
-                        ) ) }
-                    </tbody>
-                </Table>
-            </div>
+                    ) ) }
+                </tbody>
+            </Table>
+        </div>
+
             <UserForm
                 show={ showEditForm }
                 handleClose={ handleCloseEditForm }

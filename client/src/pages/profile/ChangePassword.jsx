@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 
 const ChangePassword = () =>
 {
+
+
     // State to manage form inputs
     const [ formData, setFormData ] = useState( {} );
 
@@ -23,9 +25,14 @@ const ChangePassword = () =>
         const URL = "http://127.0.0.1:5000/api/auth/change-password";
         const token = localStorage.getItem( "token" );
 
-        if ( formData.newPassword !== formData.confirmPassword )
+        if ( formData.password !== formData.confirmPassword )
         {
             toast.error( "password do not match" );
+            return;
+        }
+        else if ( formData.password.length < 5 || formData.confirmPassword.length < 5 )
+        {
+            toast.error( "password must be at least 6 characters" );
             return;
         }
         try
@@ -42,12 +49,13 @@ const ChangePassword = () =>
             const res_data = await response.json();
             console.log( res_data );
             setFormData( res_data );
+            console.log( res_data );
 
             if ( response.ok )
             {
                 toast.success( res_data.extraDetails || res_data.message );
                 setFormData( {
-                    newPassword: '',
+                    password: '',
                     confirmPassword: '',
                 } );
             }
@@ -59,6 +67,7 @@ const ChangePassword = () =>
             toast.error( "Internal Server Error, Please Try Again" );
             console.error( error );
         }
+
     };
 
     return (
@@ -66,12 +75,12 @@ const ChangePassword = () =>
             <h2>Change Password</h2>
             <form onSubmit={ handleSubmit }>
                 <div>
-                    <label htmlFor="newPassword">New Password:</label>
+                    <label htmlFor="password">New Password:</label>
                     <input
                         type="password"
-                        id="newPassword"
-                        name="newPassword"
-                        value={ formData.newPassword }
+                        id="password"
+                        name="password"
+                        value={ formData.password }
                         onChange={ handleChange }
                         required
                     />

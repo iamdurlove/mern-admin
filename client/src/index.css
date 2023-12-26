@@ -59,7 +59,7 @@ body {
         }
 
         & .content-div {
-            border: solid 1px white !important;
+            border: solid 50px rgb(231, 0, 0) !important;
             padding: 5%;
             width: 100%;
         }

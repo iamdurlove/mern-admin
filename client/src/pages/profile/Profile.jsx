@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
-import { NavLink, Routes, Route } from 'react-router-dom'
+import { NavLink, Routes, Route, useNavigate } from 'react-router-dom'
 import ChangePassword from './ChangePassword'
 import { useAuth } from '../../store/auth'
-import { EditProfile } from './EditProfile'
+import EditProfile from './EditProfile'
+import ProfileDetails from './ProfileDetails'
 
 const Profile = () =>
 {
-    const isLoggedIn = useAuth();
+    const navigate = useNavigate();
 
+    const { isLoggedIn } = useAuth();
     useEffect( () =>
     {
         if ( !isLoggedIn )
@@ -31,11 +33,12 @@ const Profile = () =>
             </div>
             <div className="content-div">
                 <div className="action-container">
-                    { }
                 </div>
                 <Routes>
                     <Route path="/change-password" element={ <ChangePassword /> } />
                     <Route path="/edit-profile" element={ <EditProfile /> } />
+                    <Route path="/" element={ <ProfileDetails /> } />
+
                 </Routes>
             </div>
         </div>

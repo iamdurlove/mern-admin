@@ -1,10 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../store/auth';
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 const EditProfile = () =>
 {
+
+
+    const navigate = useNavigate();
+
     // State to manage form inputs
     const [ formData, setFormData ] = useState( {} );
+    const [ userData, setUserData ] = useState( true );
+    const { user } = useAuth();
+
+    if ( userData && user )
+    {
+        setFormData( {
+            username: user.username,
+            email: user.email,
+            phone: user.phone
+        } );
+        setUserData( false );
+    }
 
     // Function to handle form input changes
     const handleChange = ( e ) =>
@@ -20,7 +41,7 @@ const EditProfile = () =>
     const handleSubmit = async ( e ) =>
     {
         e.preventDefault();
-        const URL = "http://127.0.0.1:5000/api/auth/change-password";
+        const URL = "http://127.0.0.1:5000/api/auth/edit-profile";
         const token = localStorage.getItem( "token" );
 
         if ( formData.newPassword !== formData.confirmPassword )
@@ -46,10 +67,8 @@ const EditProfile = () =>
             if ( response.ok )
             {
                 toast.success( res_data.extraDetails || res_data.message );
-                setFormData( {
-                    newPassword: '',
-                    confirmPassword: '',
-                } );
+                navigate( '/profile' );
+
             }
             else
                 toast.error( "Internal Server Error, Please Try Again" );
@@ -88,9 +107,9 @@ const EditProfile = () =>
                     />
                 </div>
                 <div>
-                    <label htmlFor="phone">Email:</label>
+                    <label htmlFor="phone">Phone Number:</label>
                     <input
-                        type="password"
+                        type="number"
                         id="phone"
                         name="phone"
                         value={ formData.phone }
