@@ -30,41 +30,7 @@ body {
     }
 }
 
-.admin-container {
-    display: flex;
-    gap: 5%;
 
-    & .menu-container {
-        border: solid 1px white !important;
-        padding: 4% 0;
-        text-align: center;
-        width: 15vw;
-        ;
-
-        & ul {
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            padding-left: 0!important;
-
-            & li {
-                text-align: center;
-                margin: auto;
-
-                & a {
-                    text-align: center;
-
-                }
-            }
-        }
-
-        & .content-div {
-            border: solid 50px rgb(231, 0, 0) !important;
-            padding: 5%;
-            width: 100%;
-        }
-    }
-}
     .toastBody {
         font-family: "Atlas Grotesk Web", Arial, Helvetica, sans-serif;
         /* color: #10171D; */

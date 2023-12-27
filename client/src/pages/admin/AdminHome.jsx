@@ -1,11 +1,9 @@
 import { useAuth } from "../../store/auth"
 import { useEffect } from "react";
-import { useNavigate, NavLink, Routes, Route } from 'react-router-dom';
-import AdminServices from "./AdminServices";
-import AdminUsers from "./AdminUsers";
-import AdminContacts from "./AdminContacts";
-
-
+import { useNavigate, NavLink, Outlet } from 'react-router-dom';
+import { FaUser, FaRegListAlt } from "react-icons/fa";
+import { FaMessage } from "react-icons/fa6";
+import "./css/admin.css";
 
 const AdminHome = () =>
 {
@@ -23,28 +21,24 @@ const AdminHome = () =>
                 <div className="menu-container">
                     <ul>
                         <li>
-                            <NavLink to="/admin/users">Users</NavLink>
+                            <NavLink to="/admin/users"> <FaUser /> Users</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/admin/contacts">Contact</NavLink>
+                            <NavLink to="/admin/contacts"><FaMessage /> Contact</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/admin/services">Services</NavLink>
+                            <NavLink to="/admin/services"><FaRegListAlt /> Services</NavLink>
                         </li>
                     </ul>
                 </div>
                 <div className="content-div">
                     <div className="action-container">
 
-                        <Routes>
-                            <Route path="/users" element={ <AdminUsers /> } />
-                            <Route path="/contacts" element={ <AdminContacts /> } />
-                            <Route path="/services" element={ <AdminServices /> } />
-                        </Routes>
+                        <Outlet />
                     </div>
                 </div>
 
-            </div>
+            </div >
         </>
     )
 }

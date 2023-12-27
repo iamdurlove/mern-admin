@@ -35,7 +35,6 @@ const AdminUsers = () =>
                 toast.error( "Error Loading Data" );
             }
         }
-
         fetchUsers();
     }, [] )
 
@@ -114,7 +113,7 @@ const AdminUsers = () =>
 
 
     return (
-        <><div className="user-container ">
+        <><div className="user-container">
             <Table striped bordered hover>
                 <thead>
                     <tr>

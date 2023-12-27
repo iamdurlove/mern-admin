@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
-import { NavLink, Routes, Route, useNavigate } from 'react-router-dom'
-import ChangePassword from './ChangePassword'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../store/auth'
-import EditProfile from './EditProfile'
-import ProfileDetails from './ProfileDetails'
+import { FaUserEdit } from "react-icons/fa";
+import { TbPasswordUser } from "react-icons/tb";
+import { RiLogoutCircleRFill } from "react-icons/ri";
+
+
 
 const Profile = () =>
 {
@@ -21,25 +23,21 @@ const Profile = () =>
             <div className="menu-container">
                 <ul>
                     <li>
-                        <NavLink to="/profile/edit-profile">Edit Profile</NavLink>
+                        <NavLink to="/profile/edit-profile"><FaUserEdit /> Edit Profile</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/profile/change-password">Change Password</NavLink>
+                        <NavLink to="/profile/change-password"><TbPasswordUser /> Change Password</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/logout">Logout</NavLink>
+                        <NavLink to="/logout"><RiLogoutCircleRFill /> Logout</NavLink>
                     </li>
                 </ul>
             </div>
             <div className="content-div">
                 <div className="action-container">
                 </div>
-                <Routes>
-                    <Route path="/change-password" element={ <ChangePassword /> } />
-                    <Route path="/edit-profile" element={ <EditProfile /> } />
-                    <Route path="/" element={ <ProfileDetails /> } />
 
-                </Routes>
+                <Outlet />
             </div>
         </div>
     )

@@ -16,7 +16,8 @@
 
 ul{
     display: flex;
-    gap: 3rem;
+    gap: 2rem;
+
 }
 
 ul li{
@@ -33,10 +34,22 @@ ul li a{
 }
 
 ul li a.active{
+    padding-bottom:2px ;
    border-bottom: solid 2px yellow;
 }
 ul li.username a{
  color: rgb(255, 170, 0);
+}
+
+.user-panel li{
+    list-style: none;
+
+    & a{
+        color: white;
+        text-decoration: none;
+        font-family: 'Courier New', Courier, monospace;
+
+    }
 }
 
 

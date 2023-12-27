@@ -1,0 +1,50 @@
+.content-div{
+    width: 100%!important;
+    text-align: center;
+    height: 80vh;
+    overflow-y: auto;
+}
+
+
+table{
+    border-radius: 5px!important;
+    /* overflow-y: auto; */
+    height: 80vh;
+
+}
+
+.admin-container {
+    display: flex;
+    /* gap: 5%; */
+
+    & .menu-container {
+        border: solid 1px white !important;
+        padding: 4% 0;
+        width: 20vw;
+        ;
+
+        & ul {
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            padding-left: 0!important;
+
+            & li {
+                padding: 0 10%;
+                text-align: left;
+                /* margin: auto; */
+
+                & a {
+                    text-align: left;
+
+                }
+            }
+        }
+
+        & .content-div {
+            border: solid 50px rgb(231, 0, 0) !important;
+            padding: 5%;
+            width: 100%;
+        }
+    }
+}
