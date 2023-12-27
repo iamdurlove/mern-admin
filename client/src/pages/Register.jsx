@@ -1,80 +1,68 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 const URL = "http://127.0.0.1:5000/api/auth/register";
 
-const Register = () =>
-{
-
+const Register = () => {
 	const { isLoggedIn } = useAuth();
 
-	useEffect( () =>
-	{
-		if ( isLoggedIn )
-			navigate( "/" );
-	} )
+	useEffect(() => {
+		if (isLoggedIn) navigate("/");
+	});
 
-	const [ user, setUser ] = useState( {
+	const [user, setUser] = useState({
 		username: "",
 		email: "",
 		phone: "",
 		password: "",
-	} );
+	});
 
 	const navigate = useNavigate();
 
 	const { storeToken } = useAuth();
 
 	//handling the input values
-	const handleInput = ( e ) =>
-	{
+	const handleInput = (e) => {
 		let name = e.target.name;
 		let value = e.target.value;
-		setUser( { ...user, [ name ]: value } );
-
+		setUser({ ...user, [name]: value });
 	};
 	//handling the form submit
-	const handleSubmit = async ( e ) =>
-	{
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		// console.log( user );
-		try
-		{
-			const response = await fetch( URL, {
+		try {
+			const response = await fetch(URL, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify( user ),
-			} );
+				body: JSON.stringify(user),
+			});
 			const res_data = await response.json();
-			console.log( 'res from server', res_data );
+			console.log("res from server", res_data);
 
-			if ( response.ok )
-			{
+			if (response.ok) {
 				//storing token in local storage
-				storeToken( res_data.token );
-				setUser( {
+				storeToken(res_data.token);
+				setUser({
 					username: "",
 					email: "",
 					phone: "",
 					password: "",
-				} );
-				toast.success( "Successfully Registered" );
-				navigate( "/login" );
-			} else
-			{
-				toast.error( res_data.extraDetails || res_data.message );
+				});
+				toast.success("Successfully Registered");
+				navigate("/login");
+			} else {
+				toast.error(res_data.extraDetails || res_data.message);
 			}
 
 			// console.log( response );
-		} catch ( error )
-		{
-			console.log( "register", error );
+		} catch (error) {
+			console.log("register", error);
 		}
 	};
 	return (
@@ -87,13 +75,13 @@ const Register = () =>
 								<img
 									src="/images/login.png"
 									alt="register image"
-									width={ "400" }
-									height={ "400" }
+									width={"400"}
+									height={"400"}
 								/>
 							</div>
 							<div className="registration-form">
 								<h1 className="main-heading mb-3">Registration Form</h1>
-								<form onSubmit={ handleSubmit }>
+								<form onSubmit={handleSubmit}>
 									<div className="form-inputs">
 										<label htmlFor="username">Username</label>
 										<input
@@ -103,8 +91,8 @@ const Register = () =>
 											id="username"
 											required
 											autoComplete="off"
-											value={ user.username }
-											onChange={ handleInput }
+											value={user.username}
+											onChange={handleInput}
 										/>
 									</div>
 									<div className="form-inputs">
@@ -116,8 +104,8 @@ const Register = () =>
 											id="email"
 											required
 											autoComplete="off"
-											value={ user.email }
-											onChange={ handleInput }
+											value={user.email}
+											onChange={handleInput}
 										/>
 									</div>
 									<div className="form-inputs">
@@ -129,8 +117,8 @@ const Register = () =>
 											id="phone"
 											required
 											autoComplete="off"
-											value={ user.phone }
-											onChange={ handleInput }
+											value={user.phone}
+											onChange={handleInput}
 										/>
 									</div>
 									<div className="form-inputs">
@@ -142,8 +130,8 @@ const Register = () =>
 											id="password"
 											required
 											autoComplete="off"
-											value={ user.password }
-											onChange={ handleInput }
+											value={user.password}
+											onChange={handleInput}
 										/>
 									</div>
 									<br />

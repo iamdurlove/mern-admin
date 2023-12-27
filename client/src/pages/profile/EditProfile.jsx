@@ -71,7 +71,7 @@ const EditProfile = () =>
 
             }
             else
-                toast.error( "Internal Server Error, Please Try Again" );
+                toast.error( res_data.extraDetails || res_data.message );
 
         } catch ( error )
         {

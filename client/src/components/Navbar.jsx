@@ -47,9 +47,9 @@ const Navbar = () =>
                                     <li>
                                         <NavLink to="/login"> <RiLoginCircleFill /> Login</NavLink>
                                     </li>
-                                    <li>
+                                    {/* <li>
                                         <NavLink to="/register"><IoMdPersonAdd />  Register</NavLink>
-                                    </li>
+                                    </li> */}
                                 </>
                             }
 

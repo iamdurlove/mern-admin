@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
@@ -35,15 +36,36 @@ export const AuthProvider = ( { children } ) =>
                     Authorization: `Bearer ${ token }`,
                 },
             } );
+            // console.log( response );
             if ( response.ok )
             {
                 const data = await response.json();
-                // console.log(data);
+                // console.log( data );
                 setUser( data.userData );
+            }
+
+            // logging out the unsuspicious or banned user or user who is deleted after login who has tokens
+            else if ( response.ok === false || response.status === 401 )
+            {
+                localStorage.removeItem( "token" );
+                toast.error( "Token expired, please login again" );
+                window.location.href = '/login';
             }
         } catch ( error )
         {
-            console.log( "Error fetching data", error );
+            console.log( error );
+            // Check for authentication-related error status
+            if ( error.response && error.response.status === 401 )
+            {
+                // Clear the token and perform client-side logout
+                localStorage.removeItem( 'token' );
+                // Redirect to the login page or show a message indicating logout
+                window.location.href = '/login'; // Redirect to the login page
+            } else
+            {
+                // Handle other types of errors
+                console.error( 'Error:', error.message );
+            }
         }
     };
 
@@ -51,7 +73,9 @@ export const AuthProvider = ( { children } ) =>
     {
         if ( token )
             userAuthentication();
-    }, [ token ] );
+        if ( !user )
+            LogoutUser();
+    }, [ token, LogoutUser ] );
 
     return <AuthContext.Provider value={ { isLoggedIn, storeToken, LogoutUser, user } } >
         { children }

@@ -6,8 +6,8 @@ const getAllUsers = async (req, res) => {
 	try {
 		// to get the email of loggedIn User
 		const id = req.user.id;
-
-		const users = await User.find().select("-password");
+		console.log(id);
+		const users = await User.find({ _id: { $ne: id } }).select("-password");
 		if (!users || users.length === 0)
 			return res.status(404).json({ message: "No users found" });
 		res.status(200).json(users);
@@ -38,9 +38,10 @@ const getAllServices = async (req, res) => {
 
 const deleteUser = async (req, res) => {
 	try {
-		const id = req.body.id;
-		const deleteUser = await User.deleteOne({ id });
-		if (deleteUser.deletedCount === 1)
+		const id = req.params.id;
+		const deleteUser = await User.findOneAndDelete({ _id: id });
+		console.log(deleteUser);
+		if (deleteUser)
 			return res.status(200).json({ message: "User deleted successfully" });
 		else return res.status(404).json({ error: "User not found" });
 	} catch (error) {
@@ -50,9 +51,9 @@ const deleteUser = async (req, res) => {
 
 const deleteContact = async (req, res) => {
 	try {
-		const id = req.body.id;
-		const deleteContact = await Contact.deleteOne({ id });
-		if (deleteContact.deletedCount === 1)
+		const id = req.params.id;
+		const deleteContact = await Contact.findOneAndDelete({ _id: id });
+		if (deleteContact)
 			return res.status(200).json({ message: "Contact deleted successfully" });
 		else return res.status(404).json({ error: "Contact not found" });
 	} catch (error) {
@@ -62,9 +63,11 @@ const deleteContact = async (req, res) => {
 
 const deleteService = async (req, res) => {
 	try {
-		const id = req.body.id;
-		const deleteService = await Service.deleteOne({ id });
-		if (deleteService.deletedCount === 1)
+		const id = req.params.id;
+		console.log(id);
+		const deleteService = await Service.findOneAndDelete({ _id: id });
+		// console.log(deleteService);
+		if (deleteService)
 			return res.status(200).json({ message: "Service deleted successfully" });
 		else return res.status(404).json({ error: "Service not found" });
 	} catch (error) {
@@ -87,7 +90,7 @@ const editUser = async (req, res) => {
 			(key) => user[key] !== updatedData[key]
 		);
 
-		console.log(isUpdated);
+		// console.log(isUpdated);
 
 		if (!isUpdated) {
 			return res

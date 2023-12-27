@@ -25,10 +25,9 @@ const App = () =>
   // const [ progress, setProgress ] = useState( 0 )
   return <>
     <BrowserRouter>
-
       <Navbar />
       <Routes>
-        <Route path="/" element={ <Home /> } />
+        <Route path="/" title="home" element={ <Home /> } />
         <Route path="/about" element={ <About /> } />
         <Route path="/contact" element={ <Contact /> } />
         <Route path="/service" element={ <Service /> } />

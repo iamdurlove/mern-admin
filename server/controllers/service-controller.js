@@ -9,4 +9,15 @@ const serviceController = async (req, res, next) => {
 	}
 };
 
-module.exports = serviceController;
+const postService = async (req, res) => {
+	try {
+		const data = req.body;
+		const response = await Service.create(data);
+		res.status(200).json(response);
+		console.log(response);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+module.exports = { serviceController, postService };
