@@ -6,7 +6,7 @@ const getAllUsers = async (req, res) => {
 	try {
 		// to get the email of loggedIn User
 		const id = req.user.id;
-		console.log(id);
+		// console.log(id);
 		const users = await User.find({ _id: { $ne: id } }).select("-password");
 		if (!users || users.length === 0)
 			return res.status(404).json({ message: "No users found" });
@@ -64,7 +64,7 @@ const deleteContact = async (req, res) => {
 const deleteService = async (req, res) => {
 	try {
 		const id = req.params.id;
-		console.log(id);
+		// console.log(id);
 		const deleteService = await Service.findOneAndDelete({ _id: id });
 		// console.log(deleteService);
 		if (deleteService)

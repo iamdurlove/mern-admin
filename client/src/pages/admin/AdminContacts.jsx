@@ -1,35 +1,34 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 
 const URL = "http://127.0.0.1:5000/api/admin/contacts";
+
 const token = localStorage.getItem("token");
 
 const AdminContacts = () => {
 	const [data, setData] = useState([]);
-	const navigate = useNavigate();
+	const fetchContacts = async () => {
+		try {
+			const response = await fetch(URL, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			// console.log(response);
+			const contacts = await response.json();
+			setData(contacts);
+
+			if (contacts) console.log("Data Fetched Successfully");
+			if (!contacts) toast.error("Data Fetch Failure");
+		} catch (error) {
+			toast.error("Error Loading Data");
+		}
+	};
+
 	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				const response = await fetch(URL, {
-					method: "GET",
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				// console.log(response);
-				const contacts = await response.json();
-				setData(contacts);
-
-				if (contacts) console.log("Data Fetched Successfully");
-				if (!contacts) toast.error("Data Fetch Failure");
-			} catch (error) {
-				toast.error("Error Loading Data");
-			}
-		};
-
-		fetchUsers();
+		fetchContacts();
 	}, []);
 
 	const handleDelete = async (userId, userName) => {
@@ -45,7 +44,7 @@ const AdminContacts = () => {
 				console.log(response);
 				if (response.ok) {
 					// Remove the deleted user from the state
-					navigate("/admin/contacts");
+					fetchContacts();
 					toast.success("User Deleted Successfully");
 				} else {
 					toast.error("Error Deleting Contact");

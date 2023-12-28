@@ -10,27 +10,26 @@ const AdminServices = () => {
 	const navigate = useNavigate();
 
 	const [data, setData] = useState([]);
+	const fetchServices = async () => {
+		try {
+			const response = await fetch(URL, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			const services = await response.json();
+			setData(services);
+			// console.log( services );
+			// if (services) console.log("Data Fetched Successfully");
+			if (!services) toast.error("Server Error");
+		} catch (error) {
+			toast.error("Error Loading Data");
+		}
+	};
 	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				const response = await fetch(URL, {
-					method: "GET",
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				const services = await response.json();
-				setData(services);
-				// console.log( services );
-				// if (services) console.log("Data Fetched Successfully");
-				if (!services) toast.error("Server Error");
-			} catch (error) {
-				toast.error("Error Loading Data");
-			}
-		};
-
-		fetchUsers();
-	});
+		fetchServices();
+	}, []);
 
 	const handleDelete = async (userId, serviceName) => {
 		const confirmDelete = window.confirm(
@@ -45,7 +44,7 @@ const AdminServices = () => {
 					},
 				});
 				if (response.ok) {
-					navigate("/admin/services");
+					fetchServices();
 					toast.success("Service Deleted Successfully");
 				} else {
 					toast.error("Error Deleting Service");

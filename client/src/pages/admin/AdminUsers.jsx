@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
 import UserForm from "../../components/UserForm";
@@ -8,27 +7,27 @@ const URL = "http://127.0.0.1:5000/api/admin/users";
 const token = localStorage.getItem("token");
 
 const AdminUsers = () => {
-	const navigate = useNavigate();
 	const [data, setData] = useState([]);
 	const [showEditForm, setShowEditForm] = useState(false);
 	const [selectedUser, setSelectedUser] = useState({});
+
+	const fetchUsers = async () => {
+		try {
+			const response = await fetch(URL, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			const users = await response.json();
+			setData(users);
+			// console.log( users );
+			if (response.ok) console.log("Data Fetched Successfully");
+		} catch (error) {
+			toast.error("Error Loading Data");
+		}
+	};
 	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				const response = await fetch(URL, {
-					method: "GET",
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				const users = await response.json();
-				setData(users);
-				// console.log( users );
-				if (response.ok) console.log("Data Fetched Successfully");
-			} catch (error) {
-				toast.error("Error Loading Data");
-			}
-		};
 		fetchUsers();
 	}, []);
 
@@ -44,7 +43,7 @@ const AdminUsers = () => {
 				});
 				// console.log(response);
 				if (response.ok) {
-					navigate("/admin/users");
+					fetchUsers();
 					toast.success("User Deleted Successfully");
 				} else {
 					toast.error("Error Deleting User");
