@@ -56,6 +56,10 @@ const AdminServices = () => {
 		}
 	};
 
+	const handleEdit = (service) => {
+		navigate(`/admin/service/${service}/edit`);
+	};
+
 	return (
 		<div className="user-container">
 			<NavLink
@@ -67,7 +71,6 @@ const AdminServices = () => {
 
 			<Table striped bordered hover>
 				<thead>
-					<th></th>
 					<tr>
 						<th>SN</th>
 						<th>Service</th>

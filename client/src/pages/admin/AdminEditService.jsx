@@ -4,13 +4,18 @@ import { useNavigate } from "react-router-dom";
 
 const token = localStorage.getItem("token");
 
-const AdminAddUser = () => {
-	const [user, setUser] = useState({});
+const AdminEditService = () => {
+	const [service, setService] = useState({
+		description: "",
+		service: "",
+		provider: "",
+		price: "",
+	});
 
 	const handleInput = (e) => {
 		let name = e.target.name;
 		let value = e.target.value;
-		setUser({ ...user, [name]: value });
+		setService({ ...service, [name]: value });
 	};
 
 	const navigate = useNavigate();
@@ -50,7 +55,7 @@ const AdminAddUser = () => {
 			}}
 			className="update-form"
 		>
-			<h1 className="main-heading mb-3">User Edit Form</h1>
+			<h1 className="main-heading mb-3">Edit Service</h1>
 			<form onSubmit={handleSubmit}>
 				<div className="form-inputs">
 					<label htmlFor="description">Description</label>
@@ -107,12 +112,12 @@ const AdminAddUser = () => {
 				</div>
 
 				<br />
-				<button type="submit" className="btn btn-submit btn-primary">
-					Add Service
+				<button type="submit" className="btn btn-submit btn-outline-primary">
+					Update Service
 				</button>
 			</form>
 		</div>
 	);
 };
 
-export default AdminAddUser;
+export default AdminEditService;

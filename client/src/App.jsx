@@ -12,7 +12,8 @@ import Error from "./pages/Error";
 import AdminHome from "./pages/admin/AdminHome";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminAddService from "./pages/admin/AdminAddService";
-import AdminUserEditForm from "./pages/admin/AdminUserEditForm";
+import AdminEditService from "./pages/admin/AdminEditService";
+import AdminEditUser from "./pages/admin/AdminEditUser";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminContacts from "./pages/admin/AdminContacts";
 import Navbar from "./components/Navbar";
@@ -46,7 +47,8 @@ const App = () => {
 						<Route path="contacts" element={<AdminContacts />} />
 						<Route path="services" element={<AdminServices />} />
 						<Route path="services/add" element={<AdminAddService />} />
-						<Route path="user/:id/edit" element={<AdminUserEditForm />} />
+						<Route path="service/:id/edit" element={<AdminEditService />} />
+						<Route path="user/:id/edit" element={<AdminEditUser />} />
 					</Route>
 					<Route path="*" element={<Error />} />
 				</Routes>

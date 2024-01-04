@@ -2,16 +2,21 @@ const express = require("express");
 const adminController = require("../controllers/admin-controller");
 const validate = require("../middleware/validate-middleware");
 const { userEditSchema } = require("../validators/auth-validator");
-const { serviceSchema } = require("../validators/service-validator");
+const {
+	serviceSchema,
+	editServiceSchema,
+} = require("../validators/service-validator");
 const router = express.Router();
 const authMiddleware = require("../middleware/auth-middleware");
 const adminMiddleware = require("../middleware/admin-middleware");
 
-//get user data using id
-
+//get single user using id
 router
 	.route("/user/:id")
 	.get(authMiddleware, adminMiddleware, adminController.getUser);
+router
+	.route("/service/:id")
+	.get(authMiddleware, adminMiddleware, adminController.getService);
 
 // to get all users & other data
 router
@@ -25,7 +30,6 @@ router
 	.get(authMiddleware, adminMiddleware, adminController.getAllServices);
 
 //post datas
-
 router
 	.route("/add-service")
 	.post(
@@ -54,6 +58,15 @@ router
 		authMiddleware,
 		adminMiddleware,
 		adminController.editUser
+	);
+
+router
+	.route("/services/:id")
+	.put(
+		validate(editServiceSchema),
+		authMiddleware,
+		adminMiddleware,
+		adminController.editService
 	);
 
 module.exports = router;

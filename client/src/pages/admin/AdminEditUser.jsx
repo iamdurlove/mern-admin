@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 const token = localStorage.getItem("token");
 
-const AdminUserEditForm = () => {
+const AdminEditUser = () => {
 	const [user, setUser] = useState([
 		{
 			username: "",
@@ -161,4 +161,4 @@ const AdminUserEditForm = () => {
 	);
 };
 
-export default AdminUserEditForm;
+export default AdminEditUser;

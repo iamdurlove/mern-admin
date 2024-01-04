@@ -2,6 +2,7 @@ const User = require("../models/user-model");
 const Contact = require("../models/contact-model");
 const Service = require("../models/service-model");
 
+//get single data
 const getUser = async (req, res) => {
 	try {
 		// to get the email of loggedIn User
@@ -10,6 +11,19 @@ const getUser = async (req, res) => {
 		const user = await User.findOne({ _id: id }).select("-password");
 		if (!user) return res.status(404).json({ message: "No user found" });
 		res.status(200).json(user);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+const getService = async (req, res) => {
+	try {
+		// to get the email of loggedIn User
+		const id = req.params.id;
+		// console.log(id);
+		const service = await Service.findOne({ _id: id });
+		if (!service) return res.status(404).json({ message: "No service found" });
+		res.status(200).json(service);
 	} catch (error) {
 		console.error(error);
 	}
@@ -102,6 +116,7 @@ const deleteService = async (req, res) => {
 	}
 };
 
+//edit data
 const editUser = async (req, res) => {
 	try {
 		const userId = req.params.id;
@@ -153,8 +168,49 @@ const editUser = async (req, res) => {
 	}
 };
 
+const editService = async (req, res) => {
+	try {
+		const serviceId = req.params.id;
+		const updatedData = req.body;
+		const service = await Service.findById(serviceId);
+
+		if (!service) {
+			return res.status(404).json({ error: "service not found" });
+		}
+
+		// Check if any field is updated
+		const isUpdated = Object.keys(updatedData).some(
+			(key) => service[key] !== updatedData[key]
+		);
+
+		// console.log(isUpdated);
+
+		if (!isUpdated) {
+			return res
+				.status(400)
+				.json({ message: "At least one field should be updated" });
+		}
+
+		// Update user data
+		service.description = updatedData.description || service.description;
+		service.service = updatedData.service || service.service;
+		service.provider = updatedData.provider || service.provider;
+		service.price = updatedData.price || service.price;
+
+		const data = await service.save();
+
+		return res
+			.status(200)
+			.json({ message: "Service updated successfully", data });
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ error: "Internal Server Error" });
+	}
+};
+
 module.exports = {
 	getUser,
+	getService,
 	getAllUsers,
 	getAllContacts,
 	getAllServices,
@@ -163,4 +219,5 @@ module.exports = {
 	deleteContact,
 	deleteService,
 	editUser,
+	editService,
 };
