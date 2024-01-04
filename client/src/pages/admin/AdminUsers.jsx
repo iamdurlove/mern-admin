@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
-import UserForm from "../../components/UserForm";
 
 const URL = "http://127.0.0.1:5000/api/admin/users";
 const token = localStorage.getItem("token");
 
 const AdminUsers = () => {
+	const navigate = useNavigate();
+
 	const [data, setData] = useState([]);
-	const [showEditForm, setShowEditForm] = useState(false);
-	const [selectedUser, setSelectedUser] = useState({});
 
 	const fetchUsers = async () => {
 		try {
@@ -56,42 +56,8 @@ const AdminUsers = () => {
 	};
 
 	const handleEdit = (user) => {
-		setSelectedUser(user);
-		setShowEditForm(true);
+		navigate(`/admin/user/${user}/edit`);
 	};
-
-	const handleUpdate = async (updatedData) => {
-		try {
-			const response = await fetch(`${URL}/${updatedData._id}`, {
-				method: "PUT",
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify(updatedData),
-			});
-			const res_data = await response.json();
-			// console.log(res_data);
-			if (response.ok) {
-				// Update the local state with the updated data
-				setData((prevData) =>
-					prevData.map((user) =>
-						user._id === updatedData._id ? updatedData : user
-					)
-				);
-				toast.success("User Updated Successfully");
-			} else {
-				toast.error(res_data.extraDetails || res_data.message);
-			}
-		} catch (error) {
-			console.error("Error Updating User", error);
-			toast.error("Error Updating User");
-		}
-	};
-
-	const handleCloseEditForm = () => {
-		setShowEditForm(false);
-	};
-
 	return (
 		<>
 			<div className="user-container">
@@ -141,13 +107,6 @@ const AdminUsers = () => {
 					</tbody>
 				</Table>
 			</div>
-
-			<UserForm
-				show={showEditForm}
-				handleClose={handleCloseEditForm}
-				userData={selectedUser}
-				handleUpdate={handleUpdate}
-			/>
 		</>
 	);
 };

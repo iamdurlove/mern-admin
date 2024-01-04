@@ -11,43 +11,48 @@ import Logout from "./pages/Logout";
 import Error from "./pages/Error";
 import AdminHome from "./pages/admin/AdminHome";
 import AdminServices from "./pages/admin/AdminServices";
+import AdminAddService from "./pages/admin/AdminAddService";
+import AdminUserEditForm from "./pages/admin/AdminUserEditForm";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminContacts from "./pages/admin/AdminContacts";
 import Navbar from "./components/Navbar";
 import Profile from "./pages/profile/Profile";
-import ChangePassword from './pages/profile/ChangePassword'
-import EditProfile from './pages/profile/EditProfile'
-import ProfileDetails from './pages/profile/ProfileDetails'
-import 'bootstrap/dist/css/bootstrap.css';
+import ChangePassword from "./pages/profile/ChangePassword";
+import EditProfile from "./pages/profile/EditProfile";
+import ProfileDetails from "./pages/profile/ProfileDetails";
+import "bootstrap/dist/css/bootstrap.css";
 
-const App = () =>
-{
-  // const [ progress, setProgress ] = useState( 0 )
-  return <>
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" title="home" element={ <Home /> } />
-        <Route path="/about" element={ <About /> } />
-        <Route path="/contact" element={ <Contact /> } />
-        <Route path="/service" element={ <Service /> } />
-        <Route path="/register" element={ <Register /> } />
-        <Route path="/login" element={ <Login /> } />
-        <Route path="/logout" element={ <Logout /> } />
-        <Route path="/profile/*" element={ <Profile /> } >
-          <Route path="change-password" element={ <ChangePassword /> } />
-          <Route path="edit-profile" element={ <EditProfile /> } />
-          <Route path="" element={ <ProfileDetails /> } />
-        </Route>
-        <Route path="/admin/*" element={ <AdminHome /> } >
-          <Route path="users" element={ <AdminUsers /> } />
-          <Route path="contacts" element={ <AdminContacts /> } />
-          <Route path="services" element={ <AdminServices /> } />
-        </Route>
-        <Route path="*" element={ <Error /> } />
-      </Routes>
-    </BrowserRouter>
-  </>
+const App = () => {
+	// const [ progress, setProgress ] = useState( 0 )
+	return (
+		<>
+			<BrowserRouter>
+				<Navbar />
+				<Routes>
+					<Route path="/" title="home" element={<Home />} />
+					<Route path="/about" element={<About />} />
+					<Route path="/contact" element={<Contact />} />
+					<Route path="/service" element={<Service />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/logout" element={<Logout />} />
+					<Route path="/profile/*" element={<Profile />}>
+						<Route path="change-password" element={<ChangePassword />} />
+						<Route path="edit-profile" element={<EditProfile />} />
+						<Route path="" element={<ProfileDetails />} />
+					</Route>
+					<Route path="/admin/*" element={<AdminHome />}>
+						<Route path="users" element={<AdminUsers />} />
+						<Route path="contacts" element={<AdminContacts />} />
+						<Route path="services" element={<AdminServices />} />
+						<Route path="services/add" element={<AdminAddService />} />
+						<Route path="user/:id/edit" element={<AdminUserEditForm />} />
+					</Route>
+					<Route path="*" element={<Error />} />
+				</Routes>
+			</BrowserRouter>
+		</>
+	);
 };
 
 export default App;

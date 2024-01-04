@@ -2,6 +2,19 @@ const User = require("../models/user-model");
 const Contact = require("../models/contact-model");
 const Service = require("../models/service-model");
 
+const getUser = async (req, res) => {
+	try {
+		// to get the email of loggedIn User
+		const id = req.params.id;
+		// console.log(id);
+		const user = await User.findOne({ _id: id }).select("-password");
+		if (!user) return res.status(404).json({ message: "No user found" });
+		res.status(200).json(user);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
 const getAllUsers = async (req, res) => {
 	try {
 		// to get the email of loggedIn User
@@ -15,6 +28,7 @@ const getAllUsers = async (req, res) => {
 		console.error(error);
 	}
 };
+
 const getAllContacts = async (req, res) => {
 	try {
 		const contacts = await Contact.find();
@@ -36,6 +50,19 @@ const getAllServices = async (req, res) => {
 	}
 };
 
+//post data
+const postService = async (req, res) => {
+	try {
+		const data = req.body;
+		const addService = await Service.create(data);
+		if (addService) res.status(200).json({ message: "success", addService });
+		else res.status(404).json({ message: "Internal Server Error" });
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+//delete data
 const deleteUser = async (req, res) => {
 	try {
 		const id = req.params.id;
@@ -127,9 +154,11 @@ const editUser = async (req, res) => {
 };
 
 module.exports = {
+	getUser,
 	getAllUsers,
 	getAllContacts,
 	getAllServices,
+	postService,
 	deleteUser,
 	deleteContact,
 	deleteService,

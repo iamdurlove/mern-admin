@@ -6,7 +6,13 @@ const router = express.Router();
 const authMiddleware = require("../middleware/auth-middleware");
 const adminMiddleware = require("../middleware/admin-middleware");
 
-//view
+//get user data using id
+
+router
+	.route("/user/:id")
+	.get(authMiddleware, adminMiddleware, adminController.getUser);
+
+// to get all users & other data
 router
 	.route("/users")
 	.get(authMiddleware, adminMiddleware, adminController.getAllUsers);
@@ -16,6 +22,12 @@ router
 router
 	.route("/services")
 	.get(authMiddleware, adminMiddleware, adminController.getAllServices);
+
+//post datas
+
+router
+	.route("/add-service")
+	.post(authMiddleware, adminMiddleware, adminController.postService);
 
 //delete
 router

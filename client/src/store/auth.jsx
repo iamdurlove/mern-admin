@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+	createContext,
+	useContext,
+	useState,
+	useEffect,
+	useCallback,
+} from "react";
 import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
@@ -13,13 +19,14 @@ export const AuthProvider = ({ children }) => {
 		return localStorage.setItem("token", serverToken);
 	};
 
-	let isLoggedIn = !!token;
-	console.log("Login Status: " + isLoggedIn);
 	//tackling logout functionality
-	const LogoutUser = () => {
+	const LogoutUser = useCallback(() => {
 		setToken("");
 		return localStorage.removeItem("token");
-	};
+	}, [setToken]);
+
+	let isLoggedIn = !!token;
+	console.log("Login Status: " + isLoggedIn);
 
 	// JWT authentication - to get the data of logged in user
 
@@ -60,9 +67,12 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
-		if (token) userAuthentication();
-		if (!user) LogoutUser();
-	}, [token, LogoutUser]);
+		if (token) {
+			userAuthentication();
+		} else if (!user) {
+			LogoutUser();
+		}
+	}, [token, user, LogoutUser]);
 
 	return (
 		<AuthContext.Provider value={{ isLoggedIn, storeToken, LogoutUser, user }}>

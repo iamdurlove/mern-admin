@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
 
@@ -58,6 +58,9 @@ const AdminServices = () => {
 
 	return (
 		<div className="user-container">
+			<button className="btn btn-sm btn-success mb-1 ">
+				<NavLink to="/admin/services/add">Add Services</NavLink>
+			</button>
 			<Table striped bordered hover>
 				<thead>
 					<tr>
