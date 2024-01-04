@@ -1,10 +1,9 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import "../components/css/Navbar.css";
 import { useAuth } from "../store/auth";
 import { MdHome, MdDashboard } from "react-icons/md";
 import { RiLoginCircleFill } from "react-icons/ri";
-import { IoMdPersonAdd, IoMdMail } from "react-icons/io";
+import { IoMdMail } from "react-icons/io";
 import { IoInformationCircle } from "react-icons/io5";
 import { GrServices } from "react-icons/gr";
 import { FaUser } from "react-icons/fa";

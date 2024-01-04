@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
 		} else if (!user) {
 			LogoutUser();
 		}
-	}, [token, user, LogoutUser]);
+	}, [token, user, LogoutUser, userAuthentication]);
 
 	return (
 		<AuthContext.Provider value={{ isLoggedIn, storeToken, LogoutUser, user }}>

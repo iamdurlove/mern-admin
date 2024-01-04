@@ -1,131 +1,129 @@
-const User = require("../models/user-model");
+const User = require('../models/user-model')
 
 const home = async (req, res) => {
-	try {
-		res.status(200).send("Welcome to the home page with controller");
-	} catch (error) {
-		console.log(error);
-	}
-};
+  try {
+    res.status(200).send('Welcome to the home page with controller')
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 const register = async (req, res) => {
-	try {
-		const { username, email, phone, password } = req.body;
-		const emailExist = await User.findOne({ email });
-		// const userExist = await User.findOne({ username });
+  try {
+    const { username, email, phone, password } = req.body
+    const emailExist = await User.findOne({ email })
+    // const userExist = await User.findOne({ username });
 
-		if (emailExist)
-			return res.status(400).json({ message: "User already exists" });
+    if (emailExist) { return res.status(400).json({ message: 'User already exists' }) }
 
-		const userCreated = await User.create({ email, username, phone, password });
-		res.status(200).json({
-			msg: "success",
-			token: await userCreated.generateToken(),
-			userId: userCreated._id.toString(),
-		});
-	} catch (error) {
-		res.send(500).json("internal server error");
-	}
-};
+    const userCreated = await User.create({ email, username, phone, password })
+    res.status(200).json({
+      msg: 'success',
+      token: await userCreated.generateToken(),
+      userId: userCreated._id.toString()
+    })
+  } catch (error) {
+    res.send(500).json('internal server error')
+  }
+}
 
 const login = async (req, res) => {
-	try {
-		const { email, password } = req.body;
-		const userExist = await User.findOne({ email });
-		if (!userExist) {
-			return res.status(400).json({ message: "Invalid Credentials" });
-		}
+  try {
+    const { email, password } = req.body
+    const userExist = await User.findOne({ email })
+    if (!userExist) {
+      return res.status(400).json({ message: 'Invalid Credentials' })
+    }
 
-		// const isMatch = await bcrypt.compare(password, userExist.password);
-		const isMatch = await userExist.comparePassword(password);
-		if (!isMatch)
-			return res.status(401).json({ message: "Invalid Credentials" });
-		res.status(200).json({
-			msg: "success",
-			token: await userExist.generateToken(),
-			userId: userExist._id.toString(),
-		});
-	} catch (error) {
-		console.log("login error: " + error);
-		res.status(500).json("internal server error");
-	}
-};
+    // const isMatch = await bcrypt.compare(password, userExist.password);
+    const isMatch = await userExist.comparePassword(password)
+    if (!isMatch) { return res.status(401).json({ message: 'Invalid Credentials' }) }
+    res.status(200).json({
+      msg: 'success',
+      token: await userExist.generateToken(),
+      userId: userExist._id.toString()
+    })
+  } catch (error) {
+    console.log('login error: ' + error)
+    res.status(500).json('internal server error')
+  }
+}
 
-//user data send using user route
+// user data send using user route
 
 const user = async (req, res) => {
-	try {
-		const userData = req.user;
-		// console.log(userData);
-		res.status(200).json({ userData });
-	} catch (error) {}
-};
+  try {
+    const userData = req.user
+    // console.log(userData);
+    res.status(200).json({ userData })
+  } catch (error) {}
+}
 
 const changePassword = async (req, res) => {
-	const newPassword = req.body.password;
-	const data = req.user;
-	const id = data.id;
+  const newPassword = req.body.password
+  const data = req.user
+  const id = data.id
 
-	// console.log("from frontend", newPassword);
+  // console.log("from frontend", newPassword);
 
-	const user = await User.findById(id).select("-password");
+  const user = await User.findById(id).select('-password')
 
-	user.password = newPassword;
+  user.password = newPassword
 
-	const result = await user.save();
+  const result = await user.save()
 
-	// console.log(result);
+  // console.log(result);
 
-	if (!result)
-		res
-			.status(404)
-			.json({ message: "Internal Server Error, please try again" });
+  if (!result) {
+    res
+      .status(404)
+      .json({ message: 'Internal Server Error, please try again' })
+  }
 
-	res.status(200).json({ message: "Password changed successfully", data });
-};
+  res.status(200).json({ message: 'Password changed successfully', data })
+}
 
 const editProfile = async (req, res) => {
-	try {
-		const userId = req.user.id;
-		const updatedData = req.body;
-		const user = await User.findById(userId);
+  try {
+    const userId = req.user.id
+    const updatedData = req.body
+    const user = await User.findById(userId)
 
-		// Check if any field is updated
-		const isUpdated = Object.keys(updatedData).some(
-			(key) => user[key] !== updatedData[key]
-		);
+    // Check if any field is updated
+    const isUpdated = Object.keys(updatedData).some(
+      (key) => user[key] !== updatedData[key]
+    )
 
-		// console.log(isUpdated);
+    // console.log(isUpdated);
 
-		if (!isUpdated) {
-			return res
-				.status(400)
-				.json({ message: "At least one field should be updated" });
-		}
+    if (!isUpdated) {
+      return res
+        .status(400)
+        .json({ message: 'At least one field should be updated' })
+    }
 
-		// Update user data
-		user.username = updatedData.username || user.username;
-		user.email = updatedData.email || user.email;
-		user.phone = updatedData.phone || user.phone;
+    // Update user data
+    user.username = updatedData.username || user.username
+    user.email = updatedData.email || user.email
+    user.phone = updatedData.phone || user.phone
 
-		// checking if the updated email already exists
-		const email = user.email;
+    // checking if the updated email already exists
+    const email = user.email
 
-		const emailExist = await User.findOne({
-			email,
-			_id: { $ne: userId },
-		});
+    const emailExist = await User.findOne({
+      email,
+      _id: { $ne: userId }
+    })
 
-		if (emailExist)
-			return res.status(400).json({ message: "User already exists" });
+    if (emailExist) { return res.status(400).json({ message: 'User already exists' }) }
 
-		const data = await user.save();
+    const data = await user.save()
 
-		return res.status(200).json({ message: "User updated successfully", data });
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ error: "Internal Server Error" });
-	}
-};
+    return res.status(200).json({ message: 'User updated successfully', data })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
 
-module.exports = { home, register, login, user, changePassword, editProfile };
+module.exports = { home, register, login, user, changePassword, editProfile }

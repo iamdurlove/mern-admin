@@ -15,6 +15,9 @@ dist-ssr
 #environment variables
 .env
 
+#linting
+.eslintrc.js
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
