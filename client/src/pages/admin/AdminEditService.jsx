@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const token = localStorage.getItem("token");
 
@@ -11,6 +11,7 @@ const AdminEditService = () => {
 		provider: "",
 		price: "",
 	});
+	const [serviceData, setServiceData] = useState(true);
 
 	const handleInput = (e) => {
 		let name = e.target.name;
@@ -19,13 +20,45 @@ const AdminEditService = () => {
 	};
 
 	const navigate = useNavigate();
+	const params = useParams();
+
+	const fetchServices = async () => {
+		try {
+			const URL = `http://127.0.0.1:5000/api/admin/service/${params.id}`;
+			const response = await fetch(URL, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			const res_data = await response.json();
+			console.log(response);
+			console.log(res_data);
+			if (response.ok) {
+				if (serviceData)
+					setService({
+						description: res_data.description,
+						service: res_data.service,
+						provider: res_data.provider,
+						price: res_data.price,
+					});
+				setServiceData(false);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchServices();
+	}, []);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const URL = `http://127.0.0.1:5000/api/admin/add-service`;
+		const URL = `http://127.0.0.1:5000/api/admin/services/${params.id}`;
 		try {
 			const response = await fetch(URL, {
-				method: "POST",
+				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
@@ -37,7 +70,7 @@ const AdminEditService = () => {
 
 			if (response.ok) {
 				// console.log("res from server", res_data);
-				toast.success("Service Added successfully");
+				toast.success("Service Updated successfully");
 				navigate("/admin/services");
 			} else {
 				toast.error(res_data.extraDetails || res_data.message);

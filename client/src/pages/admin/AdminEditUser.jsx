@@ -29,17 +29,17 @@ const AdminEditUser = () => {
 			const res_data = await response.json();
 			// console.log(res_data);
 
-			if (userData) {
-				setUser({
-					username: res_data.username,
-					email: res_data.email,
-					phone: res_data.phone,
-					isAdmin: res_data.isAdmin,
-				});
-				setUserData(false);
+			if (response.ok) {
+				if (userData) {
+					setUser({
+						username: res_data.username,
+						email: res_data.email,
+						phone: res_data.phone,
+						isAdmin: res_data.isAdmin,
+					});
+					setUserData(false);
+				}
 			}
-
-			if (response.ok) console.log("Data Fetched Successfully");
 		} catch (error) {
 			toast.error("Error Loading Data");
 		}
@@ -95,7 +95,7 @@ const AdminEditUser = () => {
 			}}
 			className="update-form"
 		>
-			<h1 className="main-heading mb-3">User Edit Form</h1>
+			<h1 className="main-heading mb-3">Edit User</h1>
 			<form onSubmit={handleSubmit}>
 				<div className="form-inputs">
 					<label htmlFor="username">Username</label>

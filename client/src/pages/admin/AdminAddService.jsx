@@ -55,7 +55,7 @@ const AdminAddService = () => {
 			}}
 			className="update-form"
 		>
-			<h1 className="main-heading mb-3">User Edit Form</h1>
+			<h1 className="main-heading mb-3">Add Service</h1>
 			<form onSubmit={handleSubmit}>
 				<div className="form-inputs">
 					<label htmlFor="description">Description</label>
