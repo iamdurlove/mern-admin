@@ -4,18 +4,13 @@ import { useNavigate } from "react-router-dom";
 
 const token = localStorage.getItem("token");
 
-const AdminAddService = () => {
-	const [service, setService] = useState({
-		description: "",
-		service: "",
-		provider: "",
-		price: "",
-	});
+const AdminAddUser = () => {
+	const [user, setUser] = useState({});
 
 	const handleInput = (e) => {
 		let name = e.target.name;
 		let value = e.target.value;
-		setService({ ...service, [name]: value });
+		setUser({ ...user, [name]: value });
 	};
 
 	const navigate = useNavigate();
@@ -120,4 +115,4 @@ const AdminAddService = () => {
 	);
 };
 
-export default AdminAddService;
+export default AdminAddUser;

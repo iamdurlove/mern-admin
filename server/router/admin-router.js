@@ -2,6 +2,7 @@ const express = require("express");
 const adminController = require("../controllers/admin-controller");
 const validate = require("../middleware/validate-middleware");
 const { userEditSchema } = require("../validators/auth-validator");
+const { serviceSchema } = require("../validators/service-validator");
 const router = express.Router();
 const authMiddleware = require("../middleware/auth-middleware");
 const adminMiddleware = require("../middleware/admin-middleware");
@@ -27,7 +28,12 @@ router
 
 router
 	.route("/add-service")
-	.post(authMiddleware, adminMiddleware, adminController.postService);
+	.post(
+		validate(serviceSchema),
+		authMiddleware,
+		adminMiddleware,
+		adminController.postService
+	);
 
 //delete
 router

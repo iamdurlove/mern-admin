@@ -58,11 +58,16 @@ const AdminServices = () => {
 
 	return (
 		<div className="user-container">
-			<button className="btn btn-sm btn-success mb-1 ">
-				<NavLink to="/admin/services/add">Add Services</NavLink>
-			</button>
+			<NavLink
+				className="text-decoration-none text-light"
+				to="/admin/services/add"
+			>
+				<button className="btn btn-sm btn-success mb-1">Add Services</button>
+			</NavLink>
+
 			<Table striped bordered hover>
 				<thead>
+					<th></th>
 					<tr>
 						<th>SN</th>
 						<th>Service</th>
@@ -81,7 +86,19 @@ const AdminServices = () => {
 								<td>{data[i].description}</td>
 								<td>{data[i].provider}</td>
 								<td>{data[i].price}</td>
-								<td>
+								<td
+									style={{
+										height: "100%",
+										display: "flex",
+										gap: "2%",
+									}}
+								>
+									<Button
+										variant="primary btn-sm"
+										onClick={() => handleEdit(data[i]._id)}
+									>
+										Edit
+									</Button>
 									<Button
 										variant="danger"
 										onClick={() => handleDelete(data[i]._id, data[i].service)}
