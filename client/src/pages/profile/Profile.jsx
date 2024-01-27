@@ -7,7 +7,6 @@ import { RiLogoutCircleRFill } from "react-icons/ri";
 
 const Profile = () => {
 	const navigate = useNavigate();
-
 	const { isLoggedIn } = useAuth();
 	useEffect(() => {
 		if (!isLoggedIn) navigate("/");

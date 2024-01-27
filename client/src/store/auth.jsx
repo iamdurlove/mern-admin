@@ -1,11 +1,5 @@
-import {
-	createContext,
-	useContext,
-	useState,
-	useEffect,
-	useCallback,
-} from "react";
-import { toast } from "react-toastify";
+import { createContext, useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useHistory
 
 export const AuthContext = createContext();
 
@@ -14,22 +8,25 @@ export const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	const [user, setUser] = useState({});
 
+	const navigate = useNavigate(); // Initialize useHistory
+
 	const storeToken = (serverToken) => {
 		setToken(serverToken);
 		return localStorage.setItem("token", serverToken);
 	};
 
 	//tackling logout functionality
-	const LogoutUser = useCallback(() => {
+	const LogoutUser = () => {
 		setToken("");
-		return localStorage.removeItem("token");
-	}, [setToken]);
+		localStorage.removeItem("token");
+		navigate("/login"); // Navigate to the login page
+	};
 
-	let isLoggedIn = !!token;
+	let isLoggedIn = !!(token === localStorage.getItem("token"));
+	console.log(user);
 	console.log("Login Status: " + isLoggedIn);
 
 	// JWT authentication - to get the data of logged in user
-
 	const userAuthentication = async () => {
 		try {
 			const response = await fetch("http://127.0.0.1:5000/api/auth/user", {
@@ -43,39 +40,29 @@ export const AuthProvider = ({ children }) => {
 				const data = await response.json();
 				// console.log( data );
 				setUser(data.userData);
-			}
-
-			// logging out the unsuspicious or banned user or user who is deleted after login who has tokens
-			else if (response.ok === false || response.status === 401) {
-				localStorage.removeItem("token");
-				toast.error("Token expired, please login again");
-				window.location.href = "/login";
+			} else {
+				// logging out for any unauthorized or error response
+				LogoutUser();
 			}
 		} catch (error) {
 			console.log(error);
-			// Check for authentication-related error status
-			if (error.response && error.response.status === 401) {
-				// Clear the token and perform client-side logout
-				localStorage.removeItem("token");
-				// Redirect to the login page or show a message indicating logout
-				window.location.href = "/login"; // Redirect to the login page
-			} else {
-				// Handle other types of errors
-				console.error("Error:", error.message);
-			}
 		}
 	};
 
 	useEffect(() => {
-		if (token) {
-			userAuthentication();
-		} else if (!user) {
+		if (!token) {
+			// Token is not present, log out immediately
 			LogoutUser();
+		} else {
+			// Token is present, perform authentication
+			userAuthentication();
 		}
-	}, [token, user, LogoutUser, userAuthentication]);
+	}, [token]);
 
 	return (
-		<AuthContext.Provider value={{ isLoggedIn, storeToken, LogoutUser, user }}>
+		<AuthContext.Provider
+			value={{ isLoggedIn, storeToken, LogoutUser, user, token }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

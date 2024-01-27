@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
-
-const URL = "http://127.0.0.1:5000/api/admin/users";
-const token = localStorage.getItem("token");
+import { useAuth } from "../../store/auth";
 
 const AdminUsers = () => {
+	const { token } = useAuth();
+	const URL = "http://127.0.0.1:5000/api/admin/users";
 	const navigate = useNavigate();
 
 	const [data, setData] = useState([]);

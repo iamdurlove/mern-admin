@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
-
-const URL = "http://127.0.0.1:5000/api/admin/contacts";
-
-const token = localStorage.getItem("token");
+import { useAuth } from "../../store/auth";
 
 const AdminContacts = () => {
+	const URL = "http://127.0.0.1:5000/api/admin/contacts";
+	const { token } = useAuth();
 	const [data, setData] = useState([]);
 	const fetchContacts = async () => {
 		try {

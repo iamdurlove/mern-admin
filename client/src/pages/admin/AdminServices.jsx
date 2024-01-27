@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
-
-const URL = "http://127.0.0.1:5000/api/admin/services";
-const token = localStorage.getItem("token");
+import { useAuth } from "../../store/auth";
 
 const AdminServices = () => {
+	const URL = "http://127.0.0.1:5000/api/admin/services";
+	const { token } = useAuth();
 	const navigate = useNavigate();
 
 	const [data, setData] = useState([]);
@@ -40,7 +40,7 @@ const AdminServices = () => {
 				const response = await fetch(`${URL}/${userId}`, {
 					method: "DELETE",
 					headers: {
-						Authorization: `Bearer ${token}`,
+						Authorization: `Bearer ${storeToken}`,
 					},
 				});
 				if (response.ok) {
