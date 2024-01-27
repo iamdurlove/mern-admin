@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import ServiceBox from "../components/ServiceBox";
 import "../components/css/ServiceBox.css";
+import { useAuth } from "../store/auth";
 
 const Service = (props) => {
+	const { API } = useAuth();
 	const [data, setData] = useState([
 		{
 			service: "",
@@ -12,7 +14,7 @@ const Service = (props) => {
 		},
 	]);
 
-	const URL = "http://127.0.0.1:5000/api/data/service";
+	const URL = `${API}/api/data/service`;
 
 	useEffect(() => {
 		const fetchData = async () => {

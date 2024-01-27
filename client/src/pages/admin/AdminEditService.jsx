@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
-
-const token = localStorage.getItem("token");
+import { useAuth } from "../../store/auth";
 
 const AdminEditService = () => {
+	const { token, API } = useAuth();
 	const [service, setService] = useState({
 		description: "",
 		service: "",
@@ -24,7 +24,7 @@ const AdminEditService = () => {
 
 	const fetchServices = async () => {
 		try {
-			const URL = `http://127.0.0.1:5000/api/admin/service/${params.id}`;
+			const URL = `${API}/api/admin/service/${params.id}`;
 			const response = await fetch(URL, {
 				method: "GET",
 				headers: {
@@ -55,7 +55,7 @@ const AdminEditService = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const URL = `http://127.0.0.1:5000/api/admin/services/${params.id}`;
+		const URL = `${API}/api/admin/services/${params.id}`;
 		try {
 			const response = await fetch(URL, {
 				method: "PUT",

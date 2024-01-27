@@ -8,6 +8,8 @@ export const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	const [user, setUser] = useState({});
 
+	const API = import.meta.env.VITE_APP_URI_API;
+
 	const navigate = useNavigate(); // Initialize useHistory
 
 	const storeToken = (serverToken) => {
@@ -29,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 	// JWT authentication - to get the data of logged in user
 	const userAuthentication = async () => {
 		try {
-			const response = await fetch("http://127.0.0.1:5000/api/auth/user", {
+			const response = await fetch(`${API}/api/auth/user`, {
 				method: "GET",
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -61,7 +63,7 @@ export const AuthProvider = ({ children }) => {
 
 	return (
 		<AuthContext.Provider
-			value={{ isLoggedIn, storeToken, LogoutUser, user, token }}
+			value={{ isLoggedIn, storeToken, LogoutUser, user, token, API }}
 		>
 			{children}
 		</AuthContext.Provider>

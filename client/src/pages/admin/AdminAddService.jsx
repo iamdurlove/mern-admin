@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
-const token = localStorage.getItem("token");
+import { useAuth } from "../../store/auth";
 
 const AdminAddService = () => {
+	const { token, API } = useAuth();
 	const [service, setService] = useState({
 		description: "",
 		service: "",
@@ -22,7 +22,7 @@ const AdminAddService = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const URL = `http://127.0.0.1:5000/api/admin/add-service`;
+		const URL = `${API}/api/admin/add-service`;
 		try {
 			const response = await fetch(URL, {
 				method: "POST",

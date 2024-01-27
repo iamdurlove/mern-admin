@@ -3,11 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { toast } from "react-toastify";
 
-const URL = "http://127.0.0.1:5000/api/auth/register";
-
 const Register = () => {
-	const { isLoggedIn } = useAuth();
+	const { isLoggedIn, API } = useAuth();
 
+	const URL = `${API}/api/auth/register`;
 	useEffect(() => {
 		if (isLoggedIn) navigate("/");
 	});

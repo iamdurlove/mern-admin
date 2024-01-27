@@ -9,7 +9,7 @@ const EditProfile = () => {
 	// State to manage form inputs
 	const [formData, setFormData] = useState({});
 	const [userData, setUserData] = useState(true);
-	const { user } = useAuth();
+	const { user, API } = useAuth();
 
 	if (userData && user) {
 		setFormData({
@@ -32,7 +32,7 @@ const EditProfile = () => {
 	// Function to handle form submission
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const URL = "http://127.0.0.1:5000/api/auth/edit-profile";
+		const URL = `${API}/api/auth/edit-profile`;
 		const token = localStorage.getItem("token");
 
 		if (formData.newPassword !== formData.confirmPassword) {

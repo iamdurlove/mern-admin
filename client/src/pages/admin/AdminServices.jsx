@@ -5,8 +5,8 @@ import { Table, Button } from "react-bootstrap";
 import { useAuth } from "../../store/auth";
 
 const AdminServices = () => {
-	const URL = "http://127.0.0.1:5000/api/admin/services";
-	const { token } = useAuth();
+	const { token, API } = useAuth();
+	const URL = `${API}/api/admin/services`;
 	const navigate = useNavigate();
 
 	const [data, setData] = useState([]);
@@ -40,7 +40,7 @@ const AdminServices = () => {
 				const response = await fetch(`${URL}/${userId}`, {
 					method: "DELETE",
 					headers: {
-						Authorization: `Bearer ${storeToken}`,
+						Authorization: `Bearer ${token}`,
 					},
 				});
 				if (response.ok) {

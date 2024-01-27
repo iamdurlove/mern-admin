@@ -3,8 +3,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { toast } from "react-toastify";
 
-const URL = "http://127.0.0.1:5000/api/auth/login";
-
 const Login = () => {
 	useEffect(() => {
 		if (isLoggedIn) navigate("/");
@@ -17,8 +15,9 @@ const Login = () => {
 
 	const navigate = useNavigate();
 
-	const { storeToken, isLoggedIn } = useAuth();
+	const { storeToken, isLoggedIn, API } = useAuth();
 
+	const URL = `${API}/api/auth/login`;
 	//handling the input values
 	const handleInput = (e) => {
 		let name = e.target.name;

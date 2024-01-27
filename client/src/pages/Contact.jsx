@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 const Contact = () => {
-	const { user } = useAuth();
+	const { user, API } = useAuth();
 	const [contact, setContact] = useState({
 		name: user.username || "",
 		email: user.email || "",
@@ -27,7 +27,7 @@ const Contact = () => {
 	};
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const URL = "http://127.0.0.1:5000/api/form/contact";
+		const URL = `${API}/api/form/contact`;
 
 		try {
 			const response = await fetch(URL, {

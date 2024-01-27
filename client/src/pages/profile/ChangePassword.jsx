@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { useAuth } from "../../store/auth";
 
 const ChangePassword = () => {
 	// State to manage form inputs
 	const [formData, setFormData] = useState({});
+
+	const { API } = useAuth();
 
 	// Function to handle form input changes
 	const handleChange = (e) => {
@@ -16,7 +19,7 @@ const ChangePassword = () => {
 	// Function to handle form submission
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const URL = "http://127.0.0.1:5000/api/auth/change-password";
+		const URL = `${API}/api/auth/change-password`;
 		const token = localStorage.getItem("token");
 
 		if (formData.password !== formData.confirmPassword) {

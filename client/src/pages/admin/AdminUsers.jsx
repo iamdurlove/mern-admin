@@ -5,8 +5,8 @@ import { Table, Button } from "react-bootstrap";
 import { useAuth } from "../../store/auth";
 
 const AdminUsers = () => {
-	const { token } = useAuth();
-	const URL = "http://127.0.0.1:5000/api/admin/users";
+	const { token, API } = useAuth();
+	const URL = `${API}/api/admin/users`;
 	const navigate = useNavigate();
 
 	const [data, setData] = useState([]);
