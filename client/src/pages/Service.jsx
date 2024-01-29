@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import ServiceBox from "../components/ServiceBox";
 import "../components/css/ServiceBox.css";
 import { useAuth } from "../store/auth";
+import Loading from "../utils/Loading";
 
 const Service = (props) => {
 	const { API } = useAuth();
+	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState([
 		{
 			service: "",
@@ -28,6 +30,7 @@ const Service = (props) => {
 				const res_data = await response.json();
 				// console.log( res_data );
 				setData(res_data);
+				setLoading(false);
 			} catch (error) {
 				console.error("Service data not found");
 			}
@@ -35,7 +38,9 @@ const Service = (props) => {
 		fetchData();
 	}, []);
 
-	return (
+	return loading ? (
+		<Loading />
+	) : (
 		<div className="service-container">
 			<h1>Our Services</h1>
 			<div className="service-areas">

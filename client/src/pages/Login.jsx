@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { toast } from "react-toastify";
+import Loading from "../utils/Loading";
 
 const Login = () => {
 	useEffect(() => {
 		if (isLoggedIn) navigate("/");
 	});
 
+	const [loading, setLoading] = useState(false);
 	const [user, setUser] = useState({
 		email: "",
 		password: "",
@@ -27,6 +29,7 @@ const Login = () => {
 	//handling the form submit
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true);
 		try {
 			const response = await fetch(URL, {
 				method: "POST",
@@ -49,6 +52,7 @@ const Login = () => {
 					pathname: "/",
 				});
 			} else {
+				setLoading(false);
 				toast.error(res_data.extraDetails || res_data.message);
 			}
 
@@ -57,7 +61,9 @@ const Login = () => {
 			console.log("login", error);
 		}
 	};
-	return (
+	return loading ? (
+		<Loading />
+	) : (
 		<>
 			<section>
 				<main>

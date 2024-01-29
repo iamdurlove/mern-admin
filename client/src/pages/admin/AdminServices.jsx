@@ -3,12 +3,14 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
 import { useAuth } from "../../store/auth";
+import Loading from "../../utils/Loading";
 
 const AdminServices = () => {
 	const { token, API } = useAuth();
 	const URL = `${API}/api/admin/services`;
 	const navigate = useNavigate();
 
+	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState([]);
 	const fetchServices = async () => {
 		try {
@@ -20,6 +22,7 @@ const AdminServices = () => {
 			});
 			const services = await response.json();
 			setData(services);
+			setLoading(false);
 			// console.log( services );
 			// if (services) console.log("Data Fetched Successfully");
 			if (!services) toast.error("Server Error");
@@ -60,7 +63,9 @@ const AdminServices = () => {
 		navigate(`/admin/service/${service}/edit`);
 	};
 
-	return (
+	return loading ? (
+		<Loading />
+	) : (
 		<div className="user-container">
 			<NavLink
 				className="text-decoration-none text-light"

@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useHistory
 
 export const AuthContext = createContext();
 
@@ -8,9 +7,11 @@ export const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	const [user, setUser] = useState({});
 
-	const API = import.meta.env.VITE_APP_URI_API;
+	//for loading screen
+	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(true);
 
-	const navigate = useNavigate(); // Initialize useHistory
+	const API = import.meta.env.VITE_APP_URI_API;
 
 	const storeToken = (serverToken) => {
 		setToken(serverToken);
@@ -21,11 +22,11 @@ export const AuthProvider = ({ children }) => {
 	const LogoutUser = () => {
 		setToken("");
 		localStorage.removeItem("token");
-		navigate("/login"); // Navigate to the login page
+		// window.location.href = "/login";
 	};
 
 	let isLoggedIn = !!(token === localStorage.getItem("token"));
-	console.log(user);
+	// console.log(user);
 	console.log("Login Status: " + isLoggedIn);
 
 	// JWT authentication - to get the data of logged in user
@@ -61,9 +62,30 @@ export const AuthProvider = ({ children }) => {
 		}
 	}, [token]);
 
+	useEffect(() => {
+		const fetchData = () => {
+			// Simulate a delay of 2 seconds to simulate loading
+			setTimeout(() => {
+				// Simulated data
+				const mockData = [
+					{ id: 1, name: "Item 1" },
+					{ id: 2, name: "Item 2" },
+					{ id: 3, name: "Item 3" },
+				];
+
+				// Update the state with the simulated data
+				setData(mockData);
+				// Set loading to false when the data fetch is complete
+				setLoading(false);
+			}, 500); // 2000 milliseconds (2 seconds) delay
+		};
+
+		fetchData();
+	});
+
 	return (
 		<AuthContext.Provider
-			value={{ isLoggedIn, storeToken, LogoutUser, user, token, API }}
+			value={{ isLoggedIn, storeToken, LogoutUser, user, token, API, loading }}
 		>
 			{children}
 		</AuthContext.Provider>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
 import { useAuth } from "../../store/auth";
+import Loading from "../../utils/Loading";
 
 const AdminUsers = () => {
 	const { token, API } = useAuth();
@@ -10,6 +11,7 @@ const AdminUsers = () => {
 	const navigate = useNavigate();
 
 	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	const fetchUsers = async () => {
 		try {
@@ -21,6 +23,7 @@ const AdminUsers = () => {
 			});
 			const users = await response.json();
 			setData(users);
+			setLoading(false);
 			// console.log( users );
 			if (response.ok) console.log("Data Fetched Successfully");
 		} catch (error) {
@@ -58,7 +61,9 @@ const AdminUsers = () => {
 	const handleEdit = (user) => {
 		navigate(`/admin/user/${user}/edit`);
 	};
-	return (
+	return loading ? (
+		<Loading />
+	) : (
 		<>
 			<div className="user-container">
 				<Table striped bordered hover>

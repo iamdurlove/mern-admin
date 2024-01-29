@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../store/auth";
+import Loading from "../../utils/Loading";
 
 const AdminEditService = () => {
 	const { token, API } = useAuth();
@@ -12,6 +13,7 @@ const AdminEditService = () => {
 		price: "",
 	});
 	const [serviceData, setServiceData] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	const handleInput = (e) => {
 		let name = e.target.name;
@@ -55,6 +57,7 @@ const AdminEditService = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true);
 		const URL = `${API}/api/admin/services/${params.id}`;
 		try {
 			const response = await fetch(URL, {
@@ -73,13 +76,16 @@ const AdminEditService = () => {
 				toast.success("Service Updated successfully");
 				navigate("/admin/services");
 			} else {
+				setLoading(true);
 				toast.error(res_data.extraDetails || res_data.message);
 			}
 		} catch (error) {
 			console.log("service add error: ", error);
 		}
 	};
-	return (
+	return loading ? (
+		<Loading />
+	) : (
 		<div
 			style={{
 				width: "60%",

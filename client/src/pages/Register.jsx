@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { toast } from "react-toastify";
+import Loading from "../utils/Loading";
 
 const Register = () => {
 	const { isLoggedIn, API } = useAuth();
+	const [loading, setLoading] = useState(false);
 
 	const URL = `${API}/api/auth/register`;
 	useEffect(() => {
@@ -31,6 +33,7 @@ const Register = () => {
 	//handling the form submit
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true);
 
 		// console.log( user );
 		try {
@@ -56,6 +59,7 @@ const Register = () => {
 				toast.success("Successfully Registered");
 				navigate("/login");
 			} else {
+				setLoading(false);
 				toast.error(res_data.extraDetails || res_data.message);
 			}
 
@@ -64,7 +68,9 @@ const Register = () => {
 			console.log("register", error);
 		}
 	};
-	return (
+	return loading ? (
+		<Loading />
+	) : (
 		<>
 			<section>
 				<main className="main">

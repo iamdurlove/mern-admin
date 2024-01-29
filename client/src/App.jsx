@@ -22,99 +22,96 @@ import ChangePassword from "./pages/profile/ChangePassword";
 import EditProfile from "./pages/profile/EditProfile";
 import ProfileDetails from "./pages/profile/ProfileDetails";
 import "bootstrap/dist/css/bootstrap.css";
-import { AuthProvider } from "./store/auth.jsx";
+import { useAuth } from "./store/auth.jsx";
+import Loading from "./utils/Loading.jsx";
 
-const App = () => {
+const App = (props) => {
 	const [progress, setProgress] = useState(0);
-	return (
+	const { loading } = useAuth();
+
+	return loading ? (
+		<Loading />
+	) : (
 		<>
 			<BrowserRouter>
-				<AuthProvider>
-					<LoadingBar
+				{/* <LoadingBar
 						color="#f11946"
 						progress={progress}
 						onLoaderFinished={() => setProgress(0)}
+					/> */}
+				<Navbar />
+				<Routes>
+					<Route
+						path="/"
+						title="home"
+						element={<Home setProgress={setProgress} />}
 					/>
-					<Navbar />
-					<Routes>
+					<Route path="/about" element={<About setProgress={setProgress} />} />
+					<Route
+						path="/contact"
+						element={<Contact setProgress={setProgress} />}
+					/>
+					<Route
+						path="/service"
+						element={<Service setProgress={setProgress} />}
+					/>
+					<Route
+						path="/register"
+						element={<Register setProgress={setProgress} />}
+					/>
+					<Route path="/login" element={<Login setProgress={setProgress} />} />
+					<Route
+						path="/logout"
+						element={<Logout setProgress={setProgress} />}
+					/>
+					<Route
+						path="/profile/*"
+						element={<Profile setProgress={setProgress} />}
+					>
 						<Route
-							path="/"
-							title="home"
-							element={<Home setProgress={setProgress} />}
+							path="change-password"
+							element={<ChangePassword setProgress={setProgress} />}
 						/>
 						<Route
-							path="/about"
-							element={<About setProgress={setProgress} />}
+							path="edit-profile"
+							element={<EditProfile setProgress={setProgress} />}
 						/>
 						<Route
-							path="/contact"
-							element={<Contact setProgress={setProgress} />}
+							path=""
+							element={<ProfileDetails setProgress={setProgress} />}
+						/>
+					</Route>
+					<Route
+						path="/admin/*"
+						element={<AdminHome setProgress={setProgress} />}
+					>
+						<Route
+							path="users"
+							element={<AdminUsers setProgress={setProgress} />}
 						/>
 						<Route
-							path="/service"
-							element={<Service setProgress={setProgress} />}
+							path="contacts"
+							element={<AdminContacts setProgress={setProgress} />}
 						/>
 						<Route
-							path="/register"
-							element={<Register setProgress={setProgress} />}
+							path="services"
+							element={<AdminServices setProgress={setProgress} />}
 						/>
 						<Route
-							path="/login"
-							element={<Login setProgress={setProgress} />}
+							path="services/add"
+							element={<AdminAddService setProgress={setProgress} />}
 						/>
 						<Route
-							path="/logout"
-							element={<Logout setProgress={setProgress} />}
+							path="service/:id/edit"
+							element={<AdminEditService setProgress={setProgress} />}
 						/>
 						<Route
-							path="/profile/*"
-							element={<Profile setProgress={setProgress} />}
-						>
-							<Route
-								path="change-password"
-								element={<ChangePassword setProgress={setProgress} />}
-							/>
-							<Route
-								path="edit-profile"
-								element={<EditProfile setProgress={setProgress} />}
-							/>
-							<Route
-								path=""
-								element={<ProfileDetails setProgress={setProgress} />}
-							/>
-						</Route>
-						<Route
-							path="/admin/*"
-							element={<AdminHome setProgress={setProgress} />}
-						>
-							<Route
-								path="users"
-								element={<AdminUsers setProgress={setProgress} />}
-							/>
-							<Route
-								path="contacts"
-								element={<AdminContacts setProgress={setProgress} />}
-							/>
-							<Route
-								path="services"
-								element={<AdminServices setProgress={setProgress} />}
-							/>
-							<Route
-								path="services/add"
-								element={<AdminAddService setProgress={setProgress} />}
-							/>
-							<Route
-								path="service/:id/edit"
-								element={<AdminEditService setProgress={setProgress} />}
-							/>
-							<Route
-								path="user/:id/edit"
-								element={<AdminEditUser setProgress={setProgress} />}
-							/>
-						</Route>
-						<Route path="*" element={<Error setProgress={setProgress} />} />
-					</Routes>
-				</AuthProvider>
+							path="user/:id/edit"
+							element={<AdminEditUser setProgress={setProgress} />}
+						/>
+					</Route>
+					<Route path="*" element={<Error setProgress={setProgress} />} />
+				</Routes>
 			</BrowserRouter>
 		</>
 	);

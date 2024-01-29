@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
 import { useAuth } from "../../store/auth";
+import Loading from "../../utils/Loading";
 
 const AdminContacts = () => {
 	const { token, API } = useAuth();
 	const URL = `${API}/api/admin/contacts`;
 	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const fetchContacts = async () => {
 		try {
 			const response = await fetch(URL, {
@@ -18,6 +20,7 @@ const AdminContacts = () => {
 			// console.log(response);
 			const contacts = await response.json();
 			setData(contacts);
+			setLoading(false);
 
 			if (contacts) console.log("Data Fetched Successfully");
 			if (!contacts) toast.error("Data Fetch Failure");
@@ -55,7 +58,9 @@ const AdminContacts = () => {
 		}
 	};
 
-	return (
+	return loading ? (
+		<Loading />
+	) : (
 		<div className="user-container">
 			<Table striped bordered hover>
 				<thead>

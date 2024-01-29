@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../store/auth";
+import Loading from "../../utils/Loading";
 
 const token = localStorage.getItem("token");
 
@@ -16,6 +17,7 @@ const AdminEditUser = () => {
 		},
 	]);
 	const [userData, setUserData] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
 	const params = useParams();
@@ -61,6 +63,7 @@ const AdminEditUser = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true);
 		const URL = `${API}/api/admin/users/${params.id}`;
 		try {
 			const response = await fetch(URL, {
@@ -80,6 +83,7 @@ const AdminEditUser = () => {
 				toast.success("User Updated successfully");
 				navigate("/admin/users");
 			} else {
+				setLoading(false);
 				toast.error(res_data.extraDetails || res_data.message);
 			}
 		} catch (error) {
@@ -88,7 +92,9 @@ const AdminEditUser = () => {
 		}
 	};
 
-	return (
+	return loading ? (
+		<Loading />
+	) : (
 		<div
 			style={{
 				width: "60%",

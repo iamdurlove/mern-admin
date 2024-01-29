@@ -1,16 +1,7 @@
 import { useEffect } from "react";
 import { useAuth } from "../store/auth";
 
-const Home = ({ setProgress }) => {
-	useEffect(() => {
-		setTimeout(() => {
-			setProgress(0);
-			setProgress(100);
-			setProgress(0);
-		}),
-			10;
-	}, []);
-
+const Home = () => {
 	const { user, token } = useAuth();
 	return (
 		<>

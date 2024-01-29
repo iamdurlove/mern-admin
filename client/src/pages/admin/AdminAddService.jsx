@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
+import Loading from "../../utils/Loading";
 
 const AdminAddService = () => {
 	const { token, API } = useAuth();
+	const [loading, setLoading] = useState(false);
 	const [service, setService] = useState({
 		description: "",
 		service: "",
@@ -21,6 +23,7 @@ const AdminAddService = () => {
 	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
+		setLoading(true);
 		e.preventDefault();
 		const URL = `${API}/api/admin/add-service`;
 		try {
@@ -40,13 +43,16 @@ const AdminAddService = () => {
 				toast.success("Service Added successfully");
 				navigate("/admin/services");
 			} else {
+				setLoading(false);
 				toast.error(res_data.extraDetails || res_data.message);
 			}
 		} catch (error) {
 			console.log("service add error: ", error);
 		}
 	};
-	return (
+	return loading ? (
+		<Loading />
+	) : (
 		<div
 			style={{
 				width: "60%",
