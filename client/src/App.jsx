@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import LoadingBar from "react-top-loading-bar";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
