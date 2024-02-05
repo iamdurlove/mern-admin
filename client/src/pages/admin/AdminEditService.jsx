@@ -13,7 +13,7 @@ const AdminEditService = () => {
 		price: "",
 	});
 	const [serviceData, setServiceData] = useState(true);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	const handleInput = (e) => {
 		let name = e.target.name;
@@ -45,6 +45,7 @@ const AdminEditService = () => {
 						price: res_data.price,
 					});
 				setServiceData(false);
+				setLoading(false);
 			}
 		} catch (error) {
 			console.log(error);
@@ -139,7 +140,7 @@ const AdminEditService = () => {
 				<div className="form-inputs">
 					<label htmlFor="price">Price</label>
 					<input
-						type="number"
+						type="text"
 						name="price"
 						placeholder="service price"
 						id="price"

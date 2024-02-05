@@ -4,10 +4,8 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../store/auth";
 import Loading from "../../utils/Loading";
 
-const token = localStorage.getItem("token");
-
 const AdminEditUser = () => {
-	const { API } = useAuth();
+	const { API, token } = useAuth();
 	const [user, setUser] = useState([
 		{
 			username: "",
@@ -17,7 +15,7 @@ const AdminEditUser = () => {
 		},
 	]);
 	const [userData, setUserData] = useState(true);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	const navigate = useNavigate();
 	const params = useParams();
@@ -42,6 +40,7 @@ const AdminEditUser = () => {
 						isAdmin: res_data.isAdmin,
 					});
 					setUserData(false);
+					setLoading(false);
 				}
 			}
 		} catch (error) {
