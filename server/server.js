@@ -14,6 +14,7 @@ const corsOptions = {
 		"http://localhost:5173",
 		"http://localhost:4173",
 		"http://127.0.0.1:5500",
+		"https://portfolio.durlavparajuli.com.np",
 	],
 	methods: ["GET", "HEAD", "PUT", "POST", "DELETE", "OPTIONS", "PATCH"],
 	credientials: true,
