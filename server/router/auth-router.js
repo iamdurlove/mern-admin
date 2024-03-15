@@ -17,9 +17,10 @@ router
 
 router.route("/verify/:userId/:uniqueString").get(authControllers.verify);
 
-router.route("/verified").get(authControllers.verified);
-
 router.route("/login").post(validate(loginSchema), authControllers.login);
+
+router.route("/forgot").post(authControllers.forgot);
+router.route("/reset").post(authControllers.reset);
 
 router.route("/user").get(authMiddleware, authControllers.user);
 

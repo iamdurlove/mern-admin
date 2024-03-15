@@ -23,6 +23,8 @@ import ProfileDetails from "./pages/profile/ProfileDetails";
 import "bootstrap/dist/css/bootstrap.css";
 import { useAuth } from "./store/auth.jsx";
 import Loading from "./utils/Loading.jsx";
+import Reset from "./pages/Reset.jsx";
+import Forgot from "./pages/Forgot.jsx";
 
 const App = (props) => {
 	const [progress, setProgress] = useState(0);
@@ -62,6 +64,14 @@ const App = (props) => {
 					<Route
 						path="/logout"
 						element={<Logout setProgress={setProgress} />}
+					/>
+					<Route
+						path="/forgot"
+						element={<Forgot setProgress={setProgress} />}
+					/>
+					<Route
+						path="/reset/*"
+						element={<Reset setProgress={setProgress} />}
 					/>
 					<Route
 						path="/profile/*"

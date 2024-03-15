@@ -1,5 +1,6 @@
 const User = require("../models/user-model");
 const UserVerification = require("../models/user-verification");
+const PasswordReset = require("../models/password-reset");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const path = require("node:path");
@@ -90,10 +91,6 @@ const sendVerificationEmail = ({ _id, email }, res) => {
 		.catch((error) => {
 			res.json({ status: "failed", message: error });
 		});
-};
-
-const verified = (req, res) => {
-	console.log(req.body);
 };
 
 const register = async (req, res) => {
@@ -256,6 +253,157 @@ const user = async (req, res) => {
 	} catch (error) {}
 };
 
+const forgot = async (req, res) => {
+	const { email, redirectUrl } = req.body;
+	const userData = await User.findOne({ email }).select("-password");
+	// console.log(userData);
+	if (!userData) res.status(400).json({ message: "User doesn't exist" });
+	else if (!userData.isVerified)
+		res
+			.status(400)
+			.json({ message: "pending email verification for the user" });
+	else {
+		const resetString = uuidv4() + userData._id;
+
+		PasswordReset.deleteMany({ userId: userData._id })
+			.then((result) => {
+				const mailOptions = {
+					from: process.env.MAIL_USERNAME,
+					to: email,
+					subject: "Reset your password",
+					html: `<p>Click here to reset your password</p>
+					
+					<p>This link expires in 60 minutes</p>
+					<p><a href=${
+						process.env.FRONTEND_HOST_URI +
+						"/reset?id=" +
+						userData._id +
+						"&token=" +
+						resetString
+					}>Reset Now</a></p>
+					`,
+				};
+
+				const saltRounds = 10;
+				bcrypt
+					.hash(resetString, saltRounds)
+					.then((hashedResetString) => {
+						const newResetData = new PasswordReset({
+							userId: userData._id,
+							resetString: hashedResetString,
+							createdAt: Date.now(),
+							expiresAt: Date.now() + 3600000,
+						});
+						const saveResetData = newResetData.save();
+						if (!newResetData)
+							res
+								.status(400)
+								.json({ message: "failed to create reset data in database" });
+						else {
+							transporter
+								.sendMail(mailOptions)
+								.then(() => {
+									res
+										.status(200)
+										.json({ message: "reset link sent to the email" });
+								})
+								.catch((error) => {
+									console.log(error);
+									res
+										.status(400)
+										.json({ message: "error sending the reset link mail" });
+								});
+						}
+					})
+					.catch((error) => {
+						console.log(error);
+						res.status(400).json({ message: "error hashing the reset data" });
+					});
+			})
+			.catch((error) => {
+				console.log(error);
+				res.status(400).json({ message: "error deleting previous reset data" });
+			});
+	}
+};
+
+const reset = (req, res) => {
+	let { userId, resetString, newPassword } = req.body;
+	PasswordReset.find({ userId })
+		.then((result) => {
+			if (result.length > 0) {
+				const { expiresAt } = result[0];
+				const hashedResetString = result[0].resetString;
+				if (expiresAt < Date.now()) {
+					PasswordReset.deleteOne({ userId })
+						.then(() => {
+							res.status(400).json({ message: "Reset link expired" });
+						})
+						.catch((error) => {
+							console.log(error);
+							res
+								.status(400)
+								.json({ message: "error resetting previous data " });
+						});
+				} else {
+					bcrypt
+						.compare(resetString, hashedResetString)
+						.then((isMatch) => {
+							if (isMatch) {
+								const saltRounds = 10;
+								bcrypt
+									.hash(newPassword, saltRounds)
+									.then((newHashedPassword) => {
+										User.updateOne(
+											{ _id: userId },
+											{ password: newHashedPassword }
+										)
+											.then(() => {
+												PasswordReset.deleteOne({ userId })
+													.then(() => {
+														res
+															.status(200)
+															.json({ message: "password reset successful" });
+													})
+													.catch((error) => {
+														console.log(error);
+														res
+															.status(400)
+															.json({ message: "error deleting reset data" });
+													});
+											})
+											.catch((error) => {
+												console.log(error);
+												res
+													.status(400)
+													.json({ message: "updating user password failed" });
+											});
+									})
+									.catch((error) => {
+										console.log(error);
+										res
+											.status(400)
+											.json({ message: "error hashing the new password" });
+									});
+							} else {
+								res.status(400).json({ message: "Invalid reset data" });
+							}
+						})
+						.catch((error) => {
+							console.log(error);
+							res.status(400).json({ message: "error comparing reset data" });
+						});
+				}
+			} else {
+				res.status(400).json({ message: "No reset data found" });
+			}
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(400).json({ message: "error checking existing reset data" });
+		});
+};
+
 const changePassword = async (req, res) => {
 	const newPassword = req.body.password;
 	const data = req.user;
@@ -329,9 +477,10 @@ module.exports = {
 	home,
 	register,
 	verify,
-	verified,
 	login,
 	user,
+	forgot,
+	reset,
 	changePassword,
 	editProfile,
 };

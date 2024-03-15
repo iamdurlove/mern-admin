@@ -117,9 +117,15 @@ const Login = () => {
 										<NavLink to="/register">
 											<button className="ms-2 btn btn-success">
 												Register Now
-											</button>{" "}
+											</button>
 										</NavLink>
 									</div>
+									<br />
+									<NavLink to="/forgot">
+										<button className="ms-2 btn btn-danger">
+											Forgot Password
+										</button>
+									</NavLink>
 								</form>
 							</div>
 						</div>
