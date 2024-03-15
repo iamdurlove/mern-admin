@@ -1,6 +1,8 @@
 const User = require("../models/user-model");
 const UserVerification = require("../models/user-verification");
+const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+const path = require("node:path");
 
 //unique string
 const { v4: uuidv4 } = require("uuid");
@@ -45,11 +47,53 @@ const sendVerificationEmail = ({ _id, email }, res) => {
 		subject: "Verify Your Email",
 		html: `<p>Verify your email address to complete the registration</p>
             <p><b>This link expires in 6 hours</b></p>
-            <p>Click here to veriy</p>
+            <p>Click here to verify</p>
             <p><a href=${
-							currentURL + "user/verify/" + _id + "/" + uniqueString
-						}</p>`,
+							currentURL + "/api/auth/verify/" + _id + "/" + uniqueString
+						}>Verify Now</a></p>`,
 	};
+
+	const saltRounds = 10;
+	bcrypt
+		.hash(uniqueString, saltRounds)
+		.then((hashedUniqueString) => {
+			const newVerification = new UserVerification({
+				userId: _id,
+				uniqueString: hashedUniqueString,
+				createdAt: Date.now(),
+				expiresAt: Date.now() + 21600000,
+			});
+
+			newVerification
+				.save()
+				.then(() => {
+					transporter.sendMail(mailOptions);
+					// .then(() => {
+					// 	res.json({
+					// 		status: "pending",
+					// 		message: "verification email sent",
+					// 	});
+					// })
+					// .catch((error) => {
+					// 	console.log(error);
+					// 	res.json({
+					// 		status: "failed",
+					// 		message: "verification email failed",
+					// 	});
+					// });
+				})
+				.catch((error) => {
+					console.log(error);
+					res.json({ status: "failed", message: error });
+				});
+		})
+		.catch((error) => {
+			res.json({ status: "failed", message: error });
+		});
+};
+
+const verified = (req, res) => {
+	console.log(req.body);
 };
 
 const register = async (req, res) => {
@@ -67,7 +111,6 @@ const register = async (req, res) => {
 			username,
 			phone,
 			password,
-			isVerified: false,
 		});
 
 		userCreated.save().then((result) => {
@@ -76,13 +119,103 @@ const register = async (req, res) => {
 		});
 
 		res.status(200).json({
-			msg: "success",
-			token: await userCreated.generateToken(),
+			msg: "success, please verify email",
+			// token: await userCreated.generateToken(),
 			userId: userCreated._id.toString(),
 		});
 	} catch (error) {
 		res.send(500).json("internal server error");
 	}
+};
+
+const verify = (req, res) => {
+	let { userId, uniqueString } = req.params;
+	UserVerification.find({ userId }).then((result) => {
+		if (result.length > 0) {
+			//user verification exists
+			const { expiresAt } = result[0];
+			const hashedUniqueString = result[0].uniqueString;
+			if (expiresAt < Date.now()) {
+				UserVerification.deleteOne({ userId })
+					.then((result) => {
+						User.deleteOne({ _id: userId })
+							.then(() => {
+								let message = "link expired";
+								return res.status(400).json({ message });
+							})
+							.catch((error) => {
+								console.log(error);
+							});
+					})
+					.catch((error) => {
+						console.log(error);
+						let message = "link expired";
+						return res.status(400).json({ message });
+					});
+			} else {
+				// valid record exist so we validate the user string
+				bcrypt
+					.compare(uniqueString, hashedUniqueString)
+					.then((isMatch) => {
+						if (isMatch) {
+							User.updateOne({ _id: userId }, { isVerified: true })
+								.then(() => {
+									UserVerification.deleteOne({ userId })
+										.then(() => {
+											res.sendFile(
+												path.join(__dirname, "../views/verified.html")
+											);
+											// const userVerified = User.findOne({ userId });
+											// res.status(200).json({
+											// 	msg: "verification successful",
+											// 	token: userVerified.generateToken(),
+											// 	userId: userVerified._id.toString(),
+											// });
+										})
+										.catch((error) => {
+											console.log(error);
+											let message = "error occured to verify user in final";
+											return res.status(400).json({ message });
+										});
+								})
+								.catch((error) => {
+									let message = "error occured to verify user";
+									return res.status(400).json({ message });
+								});
+						} else {
+							let message = "invalid verification details passed";
+							return res.status(400).json({ message });
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+						let message = "error while comparing hash";
+						return res.status(400).json({ message });
+					});
+			}
+		} else {
+			//user verification does not exist
+			let message = "user verification doesn't exist";
+			return res.status(400).json({ message });
+		}
+
+		const hashedUniqueString = result[0].uniqueString;
+		bcrypt
+			.compare(uniqueString, hashedUniqueString)
+			.then((isMatch) => {
+				if (isMatch) {
+					User.findByIdAndUpdate(userId, { isVerified: true });
+				} else {
+					let message = "Account record doesn't exist or been verified already";
+					return res.status(400).json({ message });
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+				let message = "An error occured";
+				return res.status(400).json({ message });
+			});
+	});
 };
 
 const login = async (req, res) => {
@@ -98,11 +231,15 @@ const login = async (req, res) => {
 		if (!isMatch) {
 			return res.status(401).json({ message: "Invalid Credentials" });
 		}
-		res.status(200).json({
-			msg: "success",
-			token: await userExist.generateToken(),
-			userId: userExist._id.toString(),
-		});
+		if (userExist.isVerified === false) {
+			return res.status(400).json({ message: "Pending verification" });
+		} else {
+			res.status(200).json({
+				msg: "success",
+				token: await userExist.generateToken(),
+				userId: userExist._id.toString(),
+			});
+		}
 	} catch (error) {
 		console.log("login error: " + error);
 		res.status(500).json("internal server error");
@@ -188,4 +325,13 @@ const editProfile = async (req, res) => {
 	}
 };
 
-module.exports = { home, register, login, user, changePassword, editProfile };
+module.exports = {
+	home,
+	register,
+	verify,
+	verified,
+	login,
+	user,
+	changePassword,
+	editProfile,
+};

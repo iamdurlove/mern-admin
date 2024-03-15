@@ -56,7 +56,7 @@ const Register = () => {
 					phone: "",
 					password: "",
 				});
-				toast.success("Successfully Registered");
+				toast.success("Successfully Registered, Check Email To Verify");
 				navigate("/login");
 			} else {
 				setLoading(false);
