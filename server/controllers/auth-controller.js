@@ -254,7 +254,7 @@ const user = async (req, res) => {
 };
 
 const forgot = async (req, res) => {
-	const { email, redirectUrl } = req.body;
+	const { email } = req.body;
 	const userData = await User.findOne({ email }).select("-password");
 	// console.log(userData);
 	if (!userData) res.status(400).json({ message: "User doesn't exist" });

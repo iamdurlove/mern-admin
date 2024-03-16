@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { toast } from "react-toastify";
 
 const Reset = () => {
-	const { storeToken, isLoggedIn, API } = useAuth();
+	const { storeToken, isLoggedIn, API, LogoutUser } = useAuth();
+	useEffect(() => {
+		LogoutUser();
+	}),
+		[LogoutUser];
 	const [formData, setFormData] = useState({});
 
 	const navigate = useNavigate();
