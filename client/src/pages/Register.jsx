@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { toast } from "react-toastify";
 import Loading from "../utils/Loading";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
 	const { isLoggedIn, API } = useAuth();
 	const [loading, setLoading] = useState(false);
+	const [verified, setVerified] = useState(false);
 
 	const URL = `${API}/api/auth/register`;
 	useEffect(() => {
@@ -35,39 +37,48 @@ const Register = () => {
 		e.preventDefault();
 		setLoading(true);
 
-		// console.log( user );
-		try {
-			const response = await fetch(URL, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(user),
-			});
-			const res_data = await response.json();
-			console.log("res from server", res_data);
-
-			if (response.ok) {
-				//storing token in local storage
-				storeToken(res_data.token);
-				setUser({
-					username: "",
-					email: "",
-					phone: "",
-					password: "",
+		if (!verified) {
+			toast.error("Complete recaptcha verfication to continue");
+			setLoading(false);
+		} else {
+			// console.log( user );
+			try {
+				setLoading(true);
+				const response = await fetch(URL, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(user),
 				});
-				toast.success("Successfully Registered, Check Email To Verify");
-				navigate("/login");
-			} else {
-				setLoading(false);
-				toast.error(res_data.extraDetails || res_data.message);
-			}
+				const res_data = await response.json();
+				console.log("res from server", res_data);
 
-			// console.log( response );
-		} catch (error) {
-			console.log("register", error);
+				if (response.ok) {
+					//storing token in local storage
+					storeToken(res_data.token);
+					setUser({
+						username: "",
+						email: "",
+						phone: "",
+						password: "",
+					});
+					toast.success("Successfully Registered, Check Email To Verify");
+					navigate("/login");
+				} else {
+					setLoading(false);
+					toast.error(res_data.extraDetails || res_data.message);
+				}
+
+				// console.log( response );
+			} catch (error) {
+				console.log("register", error);
+			}
 		}
 	};
+	function onChange(value) {
+		setVerified(true);
+	}
 	return loading ? (
 		<Loading />
 	) : (
@@ -139,11 +150,13 @@ const Register = () => {
 											onChange={handleInput}
 										/>
 									</div>
+
+									<ReCAPTCHA
+										sitekey="6Lf0tZopAAAAAFP8pacDLhZvJ-oHbxEEjNOoU0-9"
+										onChange={onChange}
+									/>
 									<br />
-									<button
-										type="submit"
-										className="btn btn-submit btn-outline-primary"
-									>
+									<button type="submit" className="btn btn-submit btn-primary">
 										Register Now
 									</button>
 								</form>
