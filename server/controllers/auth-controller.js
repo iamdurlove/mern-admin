@@ -10,8 +10,8 @@ const { v4: uuidv4 } = require("uuid");
 
 //nodemailer setup
 let transporter = nodemailer.createTransport({
-	host: "mail.rotaractsiyari.org.np",
-	port: 465,
+	host: process.env.MAIL_SERVER,
+	port: process.env.MAIL_PORT,
 	secure: true,
 	auth: {
 		user: process.env.MAIL_USERNAME,

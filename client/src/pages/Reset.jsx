@@ -4,16 +4,16 @@ import { useAuth } from "../store/auth";
 import { toast } from "react-toastify";
 
 const Reset = () => {
-	const { storeToken, isLoggedIn, API, LogoutUser } = useAuth();
-	useEffect(() => {
-		LogoutUser();
-	}),
-		[LogoutUser];
-	const [formData, setFormData] = useState({});
-
+	const { API, LogoutUser } = useAuth();
 	const navigate = useNavigate();
 	const params = new URLSearchParams(document.location.search);
 	const URL = `${API}/api/auth/reset`;
+	useEffect(() => {
+		if (!params.get("id") || !params.get("token")) navigate("/");
+		else LogoutUser();
+	}, [LogoutUser]);
+
+	const [formData, setFormData] = useState({});
 
 	const handleInput = (e) => {
 		let name = e.target.name;
@@ -40,7 +40,6 @@ const Reset = () => {
 						newPassword: formData.password,
 					}),
 				});
-
 				const res_data = await response.json();
 				console.log(res_data);
 				if (response.ok) {
