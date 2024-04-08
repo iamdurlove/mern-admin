@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 		message: "Server online",
 		developer: "Durlav Parajuli",
 		device: hostaddress,
-		network: req.connection.remoteAddress,
+		network: req.ip,
 		osVersion: os.release(),
 		osPlatform: os.platform(),
 		uptime: parseInt(os.uptime()) + " seconds",
