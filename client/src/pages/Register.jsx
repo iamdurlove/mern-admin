@@ -6,6 +6,7 @@ import Loading from "../utils/Loading";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
+	// console.log(import.meta.env.VITE_APP_RECAPTCHA_KEY);
 	const { isLoggedIn, API } = useAuth();
 	const [loading, setLoading] = useState(false);
 	const [verified, setVerified] = useState(false);
@@ -152,7 +153,7 @@ const Register = () => {
 									</div>
 
 									<ReCAPTCHA
-										sitekey="6Lf0tZopAAAAAFP8pacDLhZvJ-oHbxEEjNOoU0-9"
+										sitekey={`${import.meta.env.VITE_APP_RECAPTCHA_KEY}`}
 										onChange={onChange}
 									/>
 									<br />

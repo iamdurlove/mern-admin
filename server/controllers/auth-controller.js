@@ -37,63 +37,68 @@ const home = async (req, res) => {
 };
 
 // send verification email
-const sendVerificationEmail = ({ _id, email }, res) => {
-	const currentURL = process.env.HOST_URI;
-	const uniqueString = uuidv4() + _id;
 
-	//mail options
-	const mailOptions = {
-		from: process.env.MAIL_USERNAME,
-		to: email,
-		subject: "Verify Your Email",
-		html: `<p>Verify your email address to complete the registration</p>
+const register = async (req, res) => {
+	const sendVerificationEmail = ({ _id, email }, res) => {
+		//to get the current url
+		const url = new URL(
+			`${req.protocol}://${req.get("host")}${req.originalUrl}`
+		);
+		const currentURL = url.origin;
+		const uniqueString = uuidv4() + _id;
+
+		//mail options
+		const mailOptions = {
+			from: process.env.MAIL_USERNAME,
+			to: email,
+			subject: "Verify Your Email",
+			html: `<p>Verify your email address to complete the registration</p>
             <p><b>This link expires in 6 hours</b></p>
             <p>Click here to verify</p>
             <p><a href=${
 							currentURL + "/api/auth/verify/" + _id + "/" + uniqueString
 						}>Verify Now</a></p>`,
+		};
+
+		const saltRounds = 10;
+		bcrypt
+			.hash(uniqueString, saltRounds)
+			.then((hashedUniqueString) => {
+				const newVerification = new UserVerification({
+					userId: _id,
+					uniqueString: hashedUniqueString,
+					createdAt: Date.now(),
+					expiresAt: Date.now() + 21600000,
+				});
+
+				newVerification
+					.save()
+					.then(() => {
+						transporter.sendMail(mailOptions);
+						// .then(() => {
+						// 	res.json({
+						// 		status: "pending",
+						// 		message: "verification email sent",
+						// 	});
+						// })
+						// .catch((error) => {
+						// 	console.log(error);
+						// 	res.json({
+						// 		status: "failed",
+						// 		message: "verification email failed",
+						// 	});
+						// });
+					})
+					.catch((error) => {
+						console.log(error);
+						res.json({ status: "failed", message: error });
+					});
+			})
+			.catch((error) => {
+				res.json({ status: "failed", message: error });
+			});
 	};
 
-	const saltRounds = 10;
-	bcrypt
-		.hash(uniqueString, saltRounds)
-		.then((hashedUniqueString) => {
-			const newVerification = new UserVerification({
-				userId: _id,
-				uniqueString: hashedUniqueString,
-				createdAt: Date.now(),
-				expiresAt: Date.now() + 21600000,
-			});
-
-			newVerification
-				.save()
-				.then(() => {
-					transporter.sendMail(mailOptions);
-					// .then(() => {
-					// 	res.json({
-					// 		status: "pending",
-					// 		message: "verification email sent",
-					// 	});
-					// })
-					// .catch((error) => {
-					// 	console.log(error);
-					// 	res.json({
-					// 		status: "failed",
-					// 		message: "verification email failed",
-					// 	});
-					// });
-				})
-				.catch((error) => {
-					console.log(error);
-					res.json({ status: "failed", message: error });
-				});
-		})
-		.catch((error) => {
-			res.json({ status: "failed", message: error });
-		});
-};
-
-const register = async (req, res) => {
 	try {
 		const { username, email, phone, password } = req.body;
 		const emailExist = await User.findOne({ email });
@@ -254,6 +259,9 @@ const user = async (req, res) => {
 };
 
 const forgot = async (req, res) => {
+	//to get the current url
+	const url = new URL(`${req.protocol}://${req.get("host")}${req.originalUrl}`);
+
 	const { email } = req.body;
 	const userData = await User.findOne({ email }).select("-password");
 	// console.log(userData);
@@ -275,11 +283,7 @@ const forgot = async (req, res) => {
 					
 					<p>This link expires in 60 minutes</p>
 					<p><a href=${
-						process.env.FRONTEND_HOST_URI +
-						"/reset?id=" +
-						userData._id +
-						"&token=" +
-						resetString
+						url.origin + "/reset?id=" + userData._id + "&token=" + resetString
 					}>Reset Now</a></p>
 					`,
 				};
