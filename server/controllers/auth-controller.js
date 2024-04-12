@@ -283,7 +283,11 @@ const forgot = async (req, res) => {
 					
 					<p>This link expires in 60 minutes</p>
 					<p><a href=${
-						url.origin + "/reset?id=" + userData._id + "&token=" + resetString
+						process.env.CORS_ORIGIN +
+						"/reset?id=" +
+						userData._id +
+						"&token=" +
+						resetString
 					}>Reset Now</a></p>
 					`,
 				};
