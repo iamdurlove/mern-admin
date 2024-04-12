@@ -10,12 +10,7 @@ const connectDB = require("./utils/db");
 const errorMiddleware = require("./middleware/error-middleware");
 
 const corsOptions = {
-	origin: [
-		"http://localhost:5173",
-		"http://localhost:4173",
-		"http://127.0.0.1:5500",
-		"https://portfolio.durlavparajuli.com.np",
-	],
+	origin: [`${process.env.CORS_ORIGIN}`],
 	methods: ["GET", "HEAD", "PUT", "POST", "DELETE", "OPTIONS", "PATCH"],
 	credientials: true,
 };
