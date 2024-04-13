@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  backend:
+    container_name: mern-backend
+    build: ./server
+    env_file:
+      - ./server/.env
+    ports:
+      - "5000:5000"
+  frontend:
+     container_name: mern_frontend
+     build: ./client
+     env_file:
+      - ./client/.env
+     ports:
+      - "5173:5173"
