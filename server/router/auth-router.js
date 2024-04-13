@@ -6,7 +6,7 @@ const {
 	signUpSchema,
 	loginSchema,
 	editProfileSchema,
-	changePasswordSchema,
+	passwordChangeSchema,
 	passwordResetSchema,
 } = require("../validators/auth-validator");
 const authMiddleware = require("../middleware/auth-middleware");
@@ -31,7 +31,7 @@ router.route("/user").get(authMiddleware, authControllers.user);
 router
 	.route("/change-password")
 	.put(
-		validate(changePasswordSchema),
+		validate(passwordChangeSchema),
 		authMiddleware,
 		authControllers.changePassword
 	);

@@ -414,26 +414,28 @@ const reset = (req, res) => {
 
 const changePassword = async (req, res) => {
 	const newPassword = req.body.password;
-	const data = req.user;
-	const id = data.id;
+	const userId = req.user.id;
 
-	// console.log("from frontend", newPassword);
+	try {
+		// Retrieve user by ID
+		const user = await User.findById(userId);
+		if (!user) {
+			return res.status(404).json({ message: "User not found" });
+		}
 
-	const user = await User.findById(id).select("-password");
+		// Update user's password directly
+		user.password = newPassword;
 
-	user.password = newPassword;
+		// Save the updated user (assuming the hash is handled internally in the save method of the User model)
+		await user.save();
 
-	const result = await user.save();
-
-	// console.log(result);
-
-	if (!result) {
+		res.status(200).json({ message: "Password changed successfully" });
+	} catch (error) {
+		console.error("Error changing password:", error);
 		res
-			.status(404)
+			.status(500)
 			.json({ message: "Internal Server Error, please try again" });
 	}
-
-	res.status(200).json({ message: "Password changed successfully", data });
 };
 
 const editProfile = async (req, res) => {

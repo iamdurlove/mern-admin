@@ -55,8 +55,8 @@ const ChangePassword = () => {
 				});
 			} else toast.error("Internal Server Error, Please Try Again");
 		} catch (error) {
+			console.log("error: " + error);
 			toast.error("Internal Server Error, Please Try Again");
-			console.error(error);
 		}
 	};
 
