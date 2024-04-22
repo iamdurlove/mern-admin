@@ -16,12 +16,12 @@ pipeline {
                 }
             }
         }
-        // stage('Test2 - OWASP Dependency Check') {
-        //      steps{
-        //         dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'OWASP'
-        //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-        //     }
-        // }
+        stage('Test2 - OWASP Dependency Check') {
+             steps{
+                dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'OWASP'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
         stage('Test3 - Sonar Quality Gate Scan') {
             steps {
                timeout(time: 2, unit: 'MINUTES') {
