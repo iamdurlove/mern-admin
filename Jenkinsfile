@@ -6,7 +6,11 @@ pipeline {
     stages {
         stage('Code - Github') {
             steps {
-                git url: "https://github.com/iamdurlove/mern-admin.git", branch: "main"
+                 script {
+                    git branch: 'main',
+                        credentialsId: 'Github',
+                        url: 'https://github.com/iamdurlove/mern-admin.git'
+                }
             }
         }
         stage('Test1 - SonarQube QA') {
