@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   backend:
-    container_name: mern-backend
+    container_name: mern_backend
     build: ./server
     env_file:
       - ./server/.env
