@@ -1,65 +1,43 @@
 pipeline {
     agent any
     environment{
-        name = 'mern'
+        SONAR_HOME = tool "Sonar"
     }
     stages {
-        stage('Build') {
+        stage('Code - Github') {
             steps {
-             sh '''
-             name
-             '''
+                git url: "https://github.com/iamdurlove/mern-admin.git", branch: "main"
             }
         }
-         stage('Environment Variables') {
-             environment{
-                 username = 'kali'
-             }
+        stage('Test1 - SonarQube QA') {
             steps {
-                sh 'echo "${BUILD_ID}"'
-                sh 'echo "${name}"'
-                
+                withSonarQubeEnv("Sonar"){
+                    sh "${SONAR_HOME}/bin/sonar-scanner -Dsonar.projectName=mern -Dsonar.projectKey=mern"
+                }
             }
         }
-         stage('Printing own variable') {
+        // stage('Test2 - OWASP Dependency Check') {
+        //      steps{
+        //         dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'OWASP'
+        //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+        //     }
+        // }
+        stage('Test3 - Sonar Quality Gate Scan') {
             steps {
-                sh 'echo "${name}"'
+               timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: false
+                }
             }
         }
-        stage('Continue') {
-            input{
-                message "Should we continue"
-                ok "Yes we should"
-            }
+        stage('Test4 - Trivy File System Scan') {
             steps {
-                sh 'echo "${name}"'
-            }
-        }
-        stage('Testing') {
-            steps {
-                sh 'echo "Testing the code"'
-            }
-        }
-        stage('Git SCM') {
-            environment{
-                message = 'Successfully connected to GIT SCM'
-            }
-            steps {
-                sh 'echo "${message}"'
+                sh "trivy fs --format table -o trivy-fs-report.html ."
             }
         }
         stage('Deploy') {
             steps {
-                sh 'echo "Deploying the code"'
+                echo 'Hello World'
             }
         }
     }
-     post{
-            failure{
-                echo 'Failed'
-            }
-            success{
-                echo 'Success'
-            }
-        }
 }
