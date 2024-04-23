@@ -24,7 +24,7 @@ const Navbar = () => {
 			<header>
 				<div className="container">
 					<div className="logo-brand">
-						<NavLink to="/">Portfolio</NavLink>
+						<NavLink to="/">Believe</NavLink>
 					</div>
 					<nav>
 						<ul>
