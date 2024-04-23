@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mern-frontend-deployment
+  labels:
+    app: mern-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mern-frontend
+  template:
+    metadata:
+      labels:
+        app: mern-frontend
+    spec:
+      containers:
+        - name: mern-frontend
+          image: durlavparajuli/mern_frontend:v1
+          ports:
+            - containerPort: 5173
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mern-frontend-service
+  labels:
+    app: mern-frontend
+spec:
+  type: NodePort
+  ports:
+    - protocal: TCP
+      port: 5173
+      targetPort: 5173
+      nodePort: 30005
+  selector:
+    app: mern-frontend

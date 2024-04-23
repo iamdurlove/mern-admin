@@ -3,6 +3,7 @@ services:
   backend:
     container_name: mern_backend
     build: ./server
+    image: durlavparajuli/mern_backend:v1
     env_file:
       - ./server/.env
     ports:
@@ -10,6 +11,7 @@ services:
   frontend:
      container_name: mern_frontend
      build: ./client
+     image: durlavparajuli/mern_frontend:v1
      env_file:
       - ./client/.env
      ports:
