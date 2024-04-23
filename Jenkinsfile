@@ -38,9 +38,9 @@ pipeline {
                 sh "trivy fs --format table -o trivy-fs-report.html ."
             }
         }
-        stage('Build - Build Container') {
+        stage('Deploy') {
             steps {
-               sh "docker-compose build"
+               sh "docker-compose up -d --build"
             }
         }
     }
