@@ -32,4 +32,4 @@ spec:
   ports:
     - port: 5173
       targetPort: 5173
-      nodePort: 30005
+      nodePort: 30004
