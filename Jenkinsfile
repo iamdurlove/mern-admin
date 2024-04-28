@@ -38,11 +38,18 @@ pipeline {
                 sh "trivy fs --format table -o trivy-fs-report.html ."
             }
         }
-        stage('Deploy') {
-            steps {
-               sh "docker-compose up -d --build"
+         stage("Docker Build & Push"){
+            steps{
+                script{
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
+                       sh "docker-compose build"
+                       sh "docker push durlavparajuli/mern_frontend:v1 "
+                       sh "docker push durlavparajuli/mern_backend:v1 "
+                    }
+                }
             }
         }
+        
     }
     post {
      always {
