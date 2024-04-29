@@ -13,6 +13,7 @@ pipeline {
                 }
             }
         }
+        
         stage('Test1 - SonarQube QA') {
             steps {
                 withSonarQubeEnv("Sonar"){
@@ -20,12 +21,14 @@ pipeline {
                 }
             }
         }
+
         stage('Test2 - OWASP Dependency Check') {
              steps{
                 dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'OWASP'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
+
         stage('Test3 - Sonar Quality Gate Scan') {
             steps {
                timeout(time: 2, unit: 'MINUTES') {
@@ -33,6 +36,7 @@ pipeline {
                 }
             }
         }
+
         stage('Test4 - Trivy File System Scan') {
             steps {
                 sh "trivy fs --format table -o trivy-fs-report.html ."
@@ -44,17 +48,14 @@ pipeline {
                        sh "docker-compose build"                
                 }
             }
-        }
-
+    
         stage("Test5 - Docker Image Trivy Test"){
             steps{
                        sh "trivy image durlavparajuli/mern_frontend:v1"
                        sh "trivy image durlavparajuli/mern_backend:v1"                
                 }
             }
-        }
-
-
+    
         stage("Docker Push"){
             steps{
                 script{
@@ -70,8 +71,8 @@ pipeline {
             steps{
                        sh "docker-compose up -d"                
                 }
-            }
         }
+        
         
     }
     post {
