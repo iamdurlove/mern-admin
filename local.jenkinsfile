@@ -3,8 +3,13 @@ pipeline {
     environment{
         SONAR_HOME = tool "Sonar"
     }
+    stage('Clean - Workspace'){
+            steps{
+                cleanWs()
+            }
+        }
     stages {
-        stage('Code - Github') {
+        stage('Checkout - Github') {
             steps {
                  script {
                     git branch: 'main',
@@ -51,8 +56,8 @@ pipeline {
     
         stage("Test5 - Docker Image Trivy Test"){
             steps{
-                       sh "trivy image durlavparajuli/mern_frontend:v1"
-                       sh "trivy image durlavparajuli/mern_backend:v1"                
+                       sh "trivy image durlavparajuli/mern_frontend:v1 > trivy-frontend.txt"
+                       sh "trivy image durlavparajuli/mern_backend:v1 > trivy-backend.txt"                
                 }
             }
     
@@ -73,8 +78,8 @@ pipeline {
                     string(credentialsId: 'kubernetes', variable: 'api_token')
                 ]) 
                 {
-                    sh 'kubectl --token $api_token --server http://192.168.49.2:8443  --insecure-skip-tls-verify=true --validate=false apply -f deploy-frontend.yaml '
-                    sh 'kubectl --token $api_token --server http://192.168.49.2:8443  --insecure-skip-tls-verify=true --validate=false apply -f deploy-backend.yaml '
+                    sh 'kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true --validate=false apply -f deploy-frontend.yaml '
+                    sh 'kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true --validate=false apply -f deploy-backend.yaml '
                 }
             }
 }
