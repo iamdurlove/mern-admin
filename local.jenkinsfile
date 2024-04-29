@@ -69,11 +69,17 @@ pipeline {
 
         stage("Deploy - Using Kubernetetes(Minikube)"){
             steps {
-                script {
-                     kubernetesDeploy(configs: "deploy-backend.yaml", "deploy-frontend.yaml")
+                withCredentials([
+                    string(credentialsId: 'kubernetes', variable: 'api_token')
+                ]) 
+                {
+                    sh 'kubectl --token $api_token --server http://192.168.49.2:8443  --insecure-skip-tls-verify=true apply -f deploy-frontend.yaml '
+                    sh 'kubectl --token $api_token --server http://192.168.49.2:8443  --insecure-skip-tls-verify=true apply -f deploy-backend.yaml '
                 }
             }
-        }
+}
+        
+        
     }
     post {
      always {
