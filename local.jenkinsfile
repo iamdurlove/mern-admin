@@ -3,12 +3,13 @@ pipeline {
     environment{
         SONAR_HOME = tool "Sonar"
     }
-    stage('Clean - Workspace'){
+   
+    stages {
+         stage('Clean - Workspace'){
             steps{
                 cleanWs()
             }
         }
-    stages {
         stage('Checkout - Github') {
             steps {
                  script {
@@ -82,8 +83,7 @@ pipeline {
                     sh 'kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true --validate=false apply -f deploy-backend.yaml '
                 }
             }
-}
-        
+        }
         
     }
     post {
