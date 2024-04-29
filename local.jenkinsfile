@@ -13,7 +13,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Test1 - SonarQube QA') {
             steps {
                 withSonarQubeEnv("Sonar"){
@@ -67,12 +67,12 @@ pipeline {
             }
         }
 
-        stage("Deploy - Using Docker Image"){
+        stage("Deploy - Using Kubernetetes(Minikube)"){
             steps{
-                       sh "docker-compose up -d"                
+                       sh "kubectl apply -f deploy-backend.yaml"
+                       sh "kubectl apply -f deploy-frontend.yaml"
                 }
         }
-        
         
     }
     post {
