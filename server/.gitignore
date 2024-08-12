@@ -15,7 +15,7 @@ dist-ssr
 *.local
 
 #environment variables
-# .env
+.env
 
 #linting
 .eslintrc.js

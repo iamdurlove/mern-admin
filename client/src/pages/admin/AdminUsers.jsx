@@ -24,7 +24,7 @@ const AdminUsers = () => {
 			const users = await response.json();
 			setData(users);
 			setLoading(false);
-			// console.log( users );
+			console.log(users);
 			if (response.ok) console.log("Data Fetched Successfully");
 		} catch (error) {
 			toast.error("Error Loading Data");
@@ -73,6 +73,7 @@ const AdminUsers = () => {
 							<th>Email</th>
 							<th>Phone</th>
 							<th>isAdmin</th>
+							<th>isVerified</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -84,6 +85,7 @@ const AdminUsers = () => {
 									<td>{data[i].email}</td>
 									<td>{data[i].phone}</td>
 									<td>{data[i].isAdmin ? "Yes" : "No"}</td>
+									<td>{data[i].isVerified ? "Yes" : "No"}</td>
 									<td>
 										<Button
 											variant="primary btn-sm"
