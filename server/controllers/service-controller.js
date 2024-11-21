@@ -9,6 +9,16 @@ const serviceController = async (req, res, next) => {
 	}
 };
 
+const singleServiceController = async (req, res, next) => {
+	try {
+		const id = req.params.id;
+		const response = await Service.findById(id);
+		res.status(200).json(response);
+	} catch (error) {
+		console.log("error from the service controller: ", error);
+	}
+};
+
 const postService = async (req, res) => {
 	try {
 		const data = req.body;
@@ -20,4 +30,4 @@ const postService = async (req, res) => {
 	}
 };
 
-module.exports = { serviceController, postService };
+module.exports = { serviceController, postService, singleServiceController };

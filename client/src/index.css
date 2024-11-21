@@ -1,48 +1,46 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 html {
-    width: 80%;
-    margin: auto;
+	width: 80%;
+	margin: auto;
 }
 
 body {
-    background-color: black;
-    color: white;
+	background-color: black;
+	color: white;
 }
 
-.spinner{
-    height: 80vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+.spinner {
+	height: 80vh;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .service-container {
-    text-align: center;
+	text-align: center;
 
-    & h1 {
-        margin-bottom: 1%;
-    }
+	& h1 {
+		margin-bottom: 1%;
+	}
 
-    & .service-areas {
-        display: inline-grid;
-        grid-template-columns: auto auto auto;
-        column-gap: 8%;
-        row-gap: 2%;
-        justify-content: space-evenly;
-    }
+	& .service-areas {
+		display: inline-grid;
+		grid-template-columns: auto auto auto;
+		column-gap: 8%;
+		row-gap: 2%;
+		justify-content: space-evenly;
+	}
 }
 
-
-    .toastBody {
-        font-family: "Atlas Grotesk Web", Arial, Helvetica, sans-serif;
-        /* color: #10171D; */
-        font-size: 0.875rem !important;
-        text-transform: capitalize;
-    }
+.toastBody {
+	font-family: "Atlas Grotesk Web", Arial, Helvetica, sans-serif;
+	/* color: #10171D; */
+	font-size: 0.875rem !important;
+	text-transform: capitalize;
+}
