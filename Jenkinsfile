@@ -1,21 +1,21 @@
 pipeline {
     agent any
     environment{
-        SONAR_HOME = tool "Sonar"
+        SONAR_HOME = tool "sonar-scanner"
     }
     stages {
         stage('Code - Github') {
             steps {
                  script {
                     git branch: 'main',
-                        credentialsId: 'Github',
+                        credentialsId: 'github',
                         url: 'https://github.com/iamdurlove/mern-admin.git'
                 }
             }
         }
         stage('Test1 - SonarQube QA') {
             steps {
-                withSonarQubeEnv("Sonar"){
+                withSonarQubeEnv("sonar-server"){
                     sh "${SONAR_HOME}/bin/sonar-scanner -Dsonar.projectName=mern -Dsonar.projectKey=mern"
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
          stage("Docker Build & Push"){
             steps{
                 script{
-                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
+                   withDockerRegistry(credentialsId: 'dockerhub', toolName: 'docker'){   
                        sh "docker-compose build"
                        sh "docker push durlavparajuli/mern_frontend:v1 "
                        sh "docker push durlavparajuli/mern_backend:v1 "
