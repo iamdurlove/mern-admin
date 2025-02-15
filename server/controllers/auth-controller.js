@@ -5,6 +5,8 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const path = require("node:path");
 
+require("dotenv").config();
+
 //unique string
 const { v4: uuidv4 } = require("uuid");
 
@@ -259,9 +261,6 @@ const user = async (req, res) => {
 };
 
 const forgot = async (req, res) => {
-	//to get the current url
-	const url = new URL(`${req.protocol}://${req.get("host")}${req.originalUrl}`);
-
 	const { email } = req.body;
 	const userData = await User.findOne({ email }).select("-password");
 	// console.log(userData);
@@ -283,7 +282,7 @@ const forgot = async (req, res) => {
 					
 					<p>This link expires in 60 minutes</p>
 					<p><a href=${
-						process.env.CORS_ORIGIN +
+						process.env.CLIENT_URL +
 						"/reset?id=" +
 						userData._id +
 						"&token=" +
@@ -310,7 +309,8 @@ const forgot = async (req, res) => {
 						else {
 							transporter
 								.sendMail(mailOptions)
-								.then(() => {
+								.then((data) => {
+									console.log("Email sent successfully", data);
 									res
 										.status(200)
 										.json({ message: "reset link sent to the email" });
