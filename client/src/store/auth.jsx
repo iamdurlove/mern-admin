@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
 					setLoading(false);
 				}
 			} catch (error) {
-				toast.error("Failed to connect to the server");
+				toast.error("Failed to connect to the server!");
 			}
 		};
 		loadAPI();
