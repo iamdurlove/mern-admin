@@ -16,10 +16,15 @@ const corsOptions = {
 };
 
 const os = require("os");
+const path = require("path");
 const hostaddress = os.hostname();
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Serve static files from the uploads folder
+app.use("/public", express.static(path.join(__dirname, "./uploads")));
+
 app.use("/api/auth", authRoute);
 app.use("/api/form", contactRoute);
 app.use("/api/data", serviceRoute);

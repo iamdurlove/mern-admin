@@ -5,7 +5,7 @@ const fs = require("fs");
 // Set storage engine
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		const uploadPath = path.join(__dirname, "../../uploads");
+		const uploadPath = path.join(__dirname, "../uploads");
 
 		// Check if the uploads folder exists, if not, create it
 		if (!fs.existsSync(uploadPath)) {
