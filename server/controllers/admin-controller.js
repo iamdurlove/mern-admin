@@ -70,7 +70,12 @@ const getAllServices = async (req, res) => {
 // post data
 const postService = async (req, res) => {
 	try {
+		const { file } = req;
+		if (!file) {
+			return res.status(400).json({ message: "Image upload is required" });
+		}
 		const data = req.body;
+		data.image = file.filename; // Save the image path in the service data
 		const addService = await Service.create(data);
 		if (addService) res.status(200).json({ message: "success", addService });
 		else res.status(404).json({ message: "Internal Server Error" });
@@ -126,6 +131,12 @@ const editUser = async (req, res) => {
 		const updatedData = req.body;
 		const user = await User.findById(userId);
 
+		const { file } = req;
+
+		if (file) {
+			updatedData.image = file.filename; // Save the image path in the user data
+		}
+
 		if (!user) {
 			return res.status(404).json({ error: "User not found" });
 		}
@@ -150,6 +161,7 @@ const editUser = async (req, res) => {
 		user.password = updatedData.password || user.password;
 		user.isAdmin =
 			updatedData.isAdmin !== undefined ? updatedData.isAdmin : user.isAdmin;
+		user.image = updatedData.image || user.image;
 
 		// checking if the updated email already exists
 		const email = user.email;
@@ -182,6 +194,11 @@ const editService = async (req, res) => {
 			return res.status(404).json({ error: "service not found" });
 		}
 
+		// If a new image is uploaded, update the image path
+		if (req.file) {
+			updatedData.image = req.file.filename;
+		}
+
 		// Check if any field is updated
 		const isUpdated = Object.keys(updatedData).some(
 			(key) => service[key] !== updatedData[key]
@@ -200,6 +217,7 @@ const editService = async (req, res) => {
 		service.service = updatedData.service || service.service;
 		service.provider = updatedData.provider || service.provider;
 		service.price = updatedData.price || service.price;
+		service.image = updatedData.image || service.image;
 
 		const data = await service.save();
 

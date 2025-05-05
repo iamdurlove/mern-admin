@@ -103,6 +103,13 @@ const register = async (req, res) => {
 
 	try {
 		const { username, email, phone, password } = req.body;
+
+		const { file } = req;
+
+		if (!file) {
+			return res.status(400).json({ message: "Image is required" });
+		}
+
 		const emailExist = await User.findOne({ email });
 		// const userExist = await User.findOne({ username });
 
@@ -115,6 +122,7 @@ const register = async (req, res) => {
 			username,
 			phone,
 			password,
+			image: file.filename,
 		});
 
 		userCreated.save().then((result) => {
@@ -442,6 +450,10 @@ const editProfile = async (req, res) => {
 	try {
 		const userId = req.user.id;
 		const updatedData = req.body;
+		const { file } = req;
+		if (file) {
+			updatedData.image = file.filename; // Save the image path in the user data
+		}
 		const user = await User.findById(userId);
 
 		// Check if any field is updated
@@ -461,6 +473,7 @@ const editProfile = async (req, res) => {
 		user.username = updatedData.username || user.username;
 		user.email = updatedData.email || user.email;
 		user.phone = updatedData.phone || user.phone;
+		user.image = updatedData.image || user.image;
 
 		// checking if the updated email already exists
 		const email = user.email;

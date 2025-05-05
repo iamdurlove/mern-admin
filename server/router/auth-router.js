@@ -10,12 +10,17 @@ const {
 	passwordResetSchema,
 } = require("../validators/auth-validator");
 const authMiddleware = require("../middleware/auth-middleware");
+const upload = require("../utils/upload");
 
 router.route("/").get(authControllers.home);
 
 router
 	.route("/register")
-	.post(validate(signUpSchema), authControllers.register);
+	.post(
+		upload.single("image"),
+		validate(signUpSchema),
+		authControllers.register
+	);
 
 router.route("/verify/:userId/:uniqueString").get(authControllers.verify);
 
@@ -39,6 +44,7 @@ router
 router
 	.route("/edit-profile")
 	.put(
+		upload.single("image"),
 		validate(editProfileSchema),
 		authMiddleware,
 		authControllers.editProfile

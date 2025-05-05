@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
+	image: { type: String, required: true }, // Field to store image path
 	isVerified: {
 		type: Boolean,
 		default: false,

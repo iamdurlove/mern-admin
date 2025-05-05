@@ -22,6 +22,12 @@ const singleServiceController = async (req, res, next) => {
 const postService = async (req, res) => {
 	try {
 		const data = req.body;
+		const { file } = req;
+		if (file) {
+			data.image = file.filename; // Save the image path to the database
+		} else {
+			return res.status(400).json({ message: "Image is required" });
+		}
 		const response = await Service.create(data);
 		res.status(200).json(response);
 		console.log(response);

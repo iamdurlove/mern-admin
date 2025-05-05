@@ -9,6 +9,7 @@ const {
 const router = express.Router();
 const authMiddleware = require("../middleware/auth-middleware");
 const adminMiddleware = require("../middleware/admin-middleware");
+const upload = require("../utils/upload"); // Import upload middleware
 
 // get single user using id
 router
@@ -30,14 +31,13 @@ router
 	.get(authMiddleware, adminMiddleware, adminController.getAllServices);
 
 // post datas
-router
-	.route("/add-service")
-	.post(
-		validate(serviceSchema),
-		authMiddleware,
-		adminMiddleware,
-		adminController.postService
-	);
+router.route("/add-service").post(
+	upload.single("image"), // Add upload middleware for single image
+	validate(serviceSchema),
+	authMiddleware,
+	adminMiddleware,
+	adminController.postService
+);
 
 // delete
 router
@@ -51,22 +51,20 @@ router
 	.delete(authMiddleware, adminMiddleware, adminController.deleteService);
 
 // edit
-router
-	.route("/users/:id")
-	.put(
-		validate(userEditSchema),
-		authMiddleware,
-		adminMiddleware,
-		adminController.editUser
-	);
+router.route("/users/:id").put(
+	upload.single("image"), // Add upload middleware for single image
+	validate(userEditSchema),
+	authMiddleware,
+	adminMiddleware,
+	adminController.editUser
+);
 
-router
-	.route("/services/:id")
-	.put(
-		validate(editServiceSchema),
-		authMiddleware,
-		adminMiddleware,
-		adminController.editService
-	);
+router.route("/services/:id").put(
+	upload.single("image"), // Add upload middleware for single image
+	validate(editServiceSchema),
+	authMiddleware,
+	adminMiddleware,
+	adminController.editService
+);
 
 module.exports = router;
