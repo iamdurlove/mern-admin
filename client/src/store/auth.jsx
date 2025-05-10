@@ -26,8 +26,6 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	let isLoggedIn = !!(token === localStorage.getItem("token"));
-	// console.log(user);
-	console.log("Login Status: " + isLoggedIn);
 
 	// JWT authentication - to get the data of logged in user
 	const userAuthentication = async () => {
