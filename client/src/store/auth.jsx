@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
-
 export const AuthContext = createContext();
 
 // eslint-disable-next-line react/prop-types
@@ -12,7 +11,6 @@ export const AuthProvider = ({ children }) => {
 	const [loading, setLoading] = useState(true);
 
 	const API = import.meta.env.VITE_APP_URI_API;
-
 	const storeToken = (serverToken) => {
 		setToken(serverToken);
 		return localStorage.setItem("token", serverToken);
