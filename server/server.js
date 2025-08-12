@@ -10,7 +10,8 @@ const connectDB = require("./utils/db");
 const errorMiddleware = require("./middleware/error-middleware");
 
 const corsOptions = {
-	origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(",") : [],
+	// origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(",") : [],
+	origin: "*",
 	methods: ["GET", "HEAD", "PUT", "POST", "DELETE", "OPTIONS", "PATCH"],
 	credentials: true,
 };
