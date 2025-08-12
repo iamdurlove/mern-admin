@@ -61,7 +61,7 @@ const Contact = () => {
 			<h1 className="main-heading mb-3">Contact Form</h1> <br />
 			<form onSubmit={handleSubmit}>
 				<div className="form-inputs">
-					<label htmlFor="username">Username</label>
+					<label htmlFor="username">Name</label>
 					<input
 						type="text"
 						name="name"

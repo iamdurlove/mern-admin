@@ -69,6 +69,7 @@ const AdminUsers = () => {
 				<Table striped bordered hover>
 					<thead>
 						<tr>
+							<th>Image</th>
 							<th>Username</th>
 							<th>Email</th>
 							<th>Phone</th>
@@ -81,6 +82,17 @@ const AdminUsers = () => {
 						{data.length > 0 ? (
 							data.map((item, i) => (
 								<tr key={i}>
+									<td>
+										<img
+											src={`${API}/public/${item.image}`}
+											alt={item.username}
+											style={{
+												width: "50px",
+												height: "50px",
+												borderRadius: "50%",
+											}}
+										/>
+									</td>
 									<td>{data[i].username}</td>
 									<td>{data[i].email}</td>
 									<td>{data[i].phone}</td>
